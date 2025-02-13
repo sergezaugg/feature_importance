@@ -38,22 +38,22 @@ def make_dataset(params):
     x2["class"] = "b"
     df = pd.concat([x1, x2])
     # add a thrd feateure that is  uninformative for classification
-    df["f03"] = np.random.uniform(-1, 1, df.shape[0])
-    # re-order nicely 
+    df["f03"] = np.random.normal(0, 1, df.shape[0])
+    # re-order columns nicely 
     df = df[['class', 'f01', 'f02', 'f03']]
     return(df)
 
 
-
+# separable but only if f1 and f1 included 
 mvn_params = {
     'n1' : 5000, 'mu1' : [0,0] , 'std1' : [1,1], 'corr1' : -0.9,
     'n2' : 5000, 'mu2' : [0,0] , 'std2' : [1,1], 'corr2' : +0.9
     }
 
-# 
+# f1 alon is totally uninformative, 
 mvn_params = {
     'n1' : 5000, 'mu1' : [0,0] , 'std1' : [1,1], 'corr1' : -0.9,
-    'n2' : 5000, 'mu2' : [0,1] , 'std2' : [1,1], 'corr2' : -0.9
+    'n2' : 5000, 'mu2' : [0,3] , 'std2' : [1,1], 'corr2' : -0.9
     }
 
 # not separable 
@@ -65,14 +65,13 @@ mvn_params = {
 
 
 df = make_dataset(params = mvn_params) 
-
-
 df.head()
 
 fig = px.scatter(
     data_frame = df,
     x = 'f01',
     y = 'f02',
+    # y = 'f03',
     color = 'class',
     width = 500,
     height = 500,
@@ -89,21 +88,22 @@ clf = RandomForestClassifier(
     max_features = 3)
 
 
-# include alllvariables         
-X = df[["f01", "f02", "f03"]]
+
+# include informative features  only 
+X = df[["f01", "f02"]]
 y = df['class']
 
+# include all features         
+X = df[["f01", "f02", "f03"]]
+y = df['class']
 
 
 X = df[["f01", "f03"]]
 y = df['class']
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.60, random_state=666)
-
-
 clf.fit(X_train, y_train)
 y_pred = clf.predict_proba(X_test)[:,1]
-
 roc_auc_score(y_test, y_pred)
 
 clf.feature_importances_
