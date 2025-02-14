@@ -11,6 +11,8 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import roc_auc_score
 from utils import make_dataset
+import plotly.graph_objects as go
+from plotly.subplots import make_subplots
 
 
 #-----------------------------------------------------
@@ -58,8 +60,8 @@ for k in scenarios_di:
         color = 'class',
         width = 500,
         height = 500,
+        title = k
         )
-    # _ = fig1.update_layout(template="plotly_dark")
     # fig1.show()
 
 
@@ -77,6 +79,7 @@ for k in scenarios_di:
         ["f01", "f02", "f03"],
         ["f01", "f03"],
         ["f02", "f03"],
+        ["f01", "f02"],
         ]
 
     # loop over feature sets 
@@ -91,7 +94,7 @@ for k in scenarios_di:
         y_pred = clf.predict_proba(X_test)[:,1]
         resu_auc = np.round(roc_auc_score(y_test, y_pred),2).item()
         # get gini-based feature importance
-        resu_imp = (clf.feature_importances_).round(3).tolist()
+        resu_imp = (clf.feature_importances_).round(2).tolist()
         # prepare results to be organized in a data frame
         col_values = [[resu_auc] + resu_imp]
         col_names = ['Importance_' + a for a in feat_sel]
@@ -102,15 +105,10 @@ for k in scenarios_di:
         df_t['Included_Features'] = incl_features_str
         # store in list 
         df_resu.append(df_t)
-
     df_resu = pd.concat(df_resu)
 
 
-
-
-    import plotly.graph_objects as go
-    from plotly.subplots import make_subplots
-
+    # show table in a plotly figure 
     fig2 = go.Figure(data=[go.Table(
         header=dict(values=list(df_resu.columns),
                     fill_color='black',
@@ -120,14 +118,16 @@ for k in scenarios_di:
                 align='left'))
     ])
 
+    # combine subplots to the final plot 
     # the specs argument is a ****** pain in the ***, I still love plotly
-    fig = make_subplots(rows=2, cols=1,  specs=[[{'type': 'xy'}], [{'type': 'table'}]]   )
+    fig = make_subplots(rows=2, cols=1,  specs=[[{'type': 'xy'}], [{'type': 'table'}]] , row_heights =[0.8, 0.2]  )
     fig.add_trace(fig1['data'][0], row=1, col=1)
     fig.add_trace(fig1['data'][1], row=1, col=1)
     fig.add_trace(fig2['data'][0], row=2, col=1)
 
     _ = fig.update_layout(template="plotly_dark")
-    _ = fig.update_layout(autosize=False,width=800,height=1000,)
+    _ = fig.update_layout(autosize=False,width=700,height=900,)
+    _ = fig.update_layout(title_text=k,title_font_size=25)
     fig.show()
 
 
