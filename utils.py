@@ -39,19 +39,12 @@ def make_dataset(params):
 
 
 
-
-
-
 # devel code - supress execution if this is imported as module 
 if __name__ == "__main__":
 
     xx = bivariate_normal(n = 1000, mu =[1,1] , std = [1,1], corr = -0.9)
     xx.std(0)
     pd.DataFrame(xx).corr()
-
-
-
-
 
 
     mvn_params = {
