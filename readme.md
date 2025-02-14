@@ -1,14 +1,8 @@
 # Assess procedures for "feature importance" against true feature importance
 
-## Summary
 This code is primarily didactic. 
-
-Researchers for whom I work as data scientist often wish a ranking of feature importance.
-
-I tell them that it is not so trivial ... but they don't fully believe me.
-
+Researchers for whom I work as data scientist often wish a ranking of feature importance. 
 So here I made some intuitively appealing visuals to explain all this. 
-
 
 ## Rationale
 
