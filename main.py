@@ -13,86 +13,125 @@ from sklearn.metrics import roc_auc_score
 from utils import make_dataset
 
 
+#-----------------------------------------------------
+# (1 ) choose a scenario (the know truth)
 
-
-# scenario 1 - parallel
-mvn_params = {
-    'n1' : 5000, 'mu1' : [-0.2,-0.2] , 'std1' : [1,1], 'corr1' : -0.98,
-    'n2' : 5000, 'mu2' : [+0.2,+0.2] , 'std2' : [1,1], 'corr2' : -0.98
+scenarios_di = { 
+    "not separable" : {
+        'n1' : 5000, 'mu1' : [0,0] , 'std1' : [1,1], 'corr1' : -0.9,
+        'n2' : 5000, 'mu2' : [0,0] , 'std2' : [1,1], 'corr2' : -0.9,
+        }
+    , 
+    "scenario 0 - easy blobs" : {
+        'n1' : 5000, 'mu1' : [ 1, 1] , 'std1' : [1,1], 'corr1' : 0.7,
+        'n2' : 5000, 'mu2' : [-1,-1] , 'std2' : [1,1], 'corr2' : 0.7
+        }
+    ,
+      "scenario 1 - parallel" : {
+        'n1' : 5000, 'mu1' : [-0.2,-0.2] , 'std1' : [1,1], 'corr1' : -0.98,
+        'n2' : 5000, 'mu2' : [+0.2,+0.2] , 'std2' : [1,1], 'corr2' : -0.98
+        }
+    ,
+    "scenario 2 - cross" : {
+        'n1' : 5000, 'mu1' : [0,0] , 'std1' : [1,1], 'corr1' : -0.9,
+        'n2' : 5000, 'mu2' : [0,0] , 'std2' : [1,1], 'corr2' : +0.9
+        }
+    ,
     }
 
 
-# scenario 2 - cross
-mvn_params = {
-    'n1' : 5000, 'mu1' : [0,0] , 'std1' : [1,1], 'corr1' : -0.9,
-    'n2' : 5000, 'mu2' : [0,0] , 'std2' : [1,1], 'corr2' : +0.9
-    }
+# loop over scenarios 
+for k in scenarios_di:
+    print(k)
+    mvn_params = scenarios_di[k]
 
 
-# not separable 
-mvn_params = {
-    'n1' : 5000, 'mu1' : [0,0] , 'std1' : [1,1], 'corr1' : -0.9,
-    'n2' : 5000, 'mu2' : [0,0] , 'std2' : [1,1], 'corr2' : -0.9,
-    }
+    #-----------------------------------------------------
+    # (2) generate the dataset and plot it 
+    df = make_dataset(params = mvn_params) 
+    # df.head()
 
-
-    
-# scenario 0 - easy blobs
-mvn_params = {
-    'n1' : 5000, 'mu1' : [ 1, 1] , 'std1' : [1,1], 'corr1' : 0.7,
-    'n2' : 5000, 'mu2' : [-1,-1] , 'std2' : [1,1], 'corr2' : 0.7
-    }
-
-df = make_dataset(params = mvn_params) 
-df.head()
-
-fig = px.scatter(
-    data_frame = df,
-    x = 'f01',
-    y = 'f02',
-    color = 'class',
-    width = 500,
-    height = 500,
-    )
-fig.update_layout(template="plotly_dark")
-fig.show()
+    fig1 = px.scatter(
+        data_frame = df,
+        x = 'f01',
+        y = 'f02',
+        color = 'class',
+        width = 500,
+        height = 500,
+        )
+    # _ = fig1.update_layout(template="plotly_dark")
+    # fig1.show()
 
 
 
-clf = RandomForestClassifier(
-    n_estimators=100,               
-    max_depth=20, 
-    random_state=0, 
-    max_features = 3)
+    #-----------------------------------------------------
+    # (3) fit models for supervised classification and store performance and feature importance metrics
+    clf = RandomForestClassifier(
+        n_estimators=100,               
+        max_depth=20, 
+        random_state=0, 
+        max_features = 1)
+
+    # 
+    feat_li = [
+        ["f01", "f02", "f03"],
+        ["f01", "f03"],
+        ["f02", "f03"],
+        ]
+
+    # loop over feature sets 
+    df_resu = []
+    for feat_sel in feat_li:
+        # fit RFO model
+        X = df[feat_sel]
+        y = df['class']
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.60)
+        clf.fit(X_train, y_train)
+        # get overall performance as ROC-AUC
+        y_pred = clf.predict_proba(X_test)[:,1]
+        resu_auc = np.round(roc_auc_score(y_test, y_pred),2).item()
+        # get gini-based feature importance
+        resu_imp = (clf.feature_importances_).round(3).tolist()
+        # prepare results to be organized in a data frame
+        col_values = [[resu_auc] + resu_imp]
+        col_names = ['Importance_' + a for a in feat_sel]
+        col_names = ['AUC_Test'] + col_names
+        df_t = pd.DataFrame(col_values, columns = col_names)
+        # append meta-data on teh right of df 
+        incl_features_str = ", ".join(feat_sel)
+        df_t['Included_Features'] = incl_features_str
+        # store in list 
+        df_resu.append(df_t)
+
+    df_resu = pd.concat(df_resu)
 
 
-# 
-feat_li = [
-    ["f01", "f02", "f03"],
-    ["f01", "f03"],
-    ["f02", "f03"],
-    ]
 
-df_resu = []
-for feat_sel in feat_li:
-    # fit RFO model
-    X = df[feat_sel]
-    y = df['class']
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.60)
-    clf.fit(X_train, y_train)
-    # get overall performance as ROC-AUC
-    y_pred = clf.predict_proba(X_test)[:,1]
-    resu_auc = np.round(roc_auc_score(y_test, y_pred),2).item()
-    # get gini-based feature importance
-    resu_imp = (clf.feature_importances_).round(3).tolist()
 
-    # prepare results to be organized in a data frame
-    col_values = [[resu_auc] + resu_imp]
-    col_names = ['Importance_' + a for a in feat_sel]
-    col_names = ['AUC_Test'] + col_names
-    df_resu.append(pd.DataFrame(col_values, columns = col_names))
+    import plotly.graph_objects as go
+    from plotly.subplots import make_subplots
 
-pd.concat(df_resu)
+    fig2 = go.Figure(data=[go.Table(
+        header=dict(values=list(df_resu.columns),
+                    fill_color='black',
+                    align='left'),
+        cells=dict(values=[df_resu.AUC_Test, df_resu.Importance_f01, df_resu.Importance_f02, df_resu.Importance_f03, df_resu.Included_Features],
+                fill_color='black',
+                align='left'))
+    ])
+
+    # the specs argument is a ****** pain in the ***, I still love plotly
+    fig = make_subplots(rows=2, cols=1,  specs=[[{'type': 'xy'}], [{'type': 'table'}]]   )
+    fig.add_trace(fig1['data'][0], row=1, col=1)
+    fig.add_trace(fig1['data'][1], row=1, col=1)
+    fig.add_trace(fig2['data'][0], row=2, col=1)
+
+    _ = fig.update_layout(template="plotly_dark")
+    _ = fig.update_layout(autosize=False,width=800,height=1000,)
+    fig.show()
+
+
+
 
 
 
