@@ -25,9 +25,9 @@ def make_dataset(params):
     x2 = bivariate_normal(n = params['n2'], mu = params['mu2'] , std = params['std2'], corr = params['corr2'])
     # add a class for supervied classification
     x1 = pd.DataFrame(x1, columns = ["f01", "f02"])
-    x1["class"] = "a"
+    x1["class"] = "Class A"
     x2 = pd.DataFrame(x2, columns = ["f01", "f02"])
-    x2["class"] = "b"
+    x2["class"] = "Class B"
     df = pd.concat([x1, x2])
     # add a thrd feateure that is  uninformative for classification
     df["f03"] = np.random.normal(0, 1, df.shape[0])

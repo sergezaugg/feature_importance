@@ -16,7 +16,7 @@ from plotly.subplots import make_subplots
 
 
 #-----------------------------------------------------
-# (1 ) choose a scenario (the know truth)
+# (1) choose a scenario (the know truth)
 
 scenarios_di = { 
     "Features are NOT informative" : {
@@ -35,8 +35,8 @@ scenarios_di = {
         }
     ,
      "Both features are informative and redundant" : {
-        'n1' : 5000, 'mu1' : [ 1, 1] , 'std1' : [1,1], 'corr1' : 0.9,
-        'n2' : 5000, 'mu2' : [-1,-1] , 'std2' : [1,1], 'corr2' : 0.9,
+        'n1' : 5000, 'mu1' : [ 1, 1] , 'std1' : [1,1], 'corr1' : +0.98,
+        'n2' : 5000, 'mu2' : [-1,-1] , 'std2' : [1,1], 'corr2' : +0.98,
         }
     ,
     "Joint information from features needed - parallel" : {
@@ -93,8 +93,11 @@ for k in scenarios_di:
         # get overall performance as ROC-AUC
         y_pred = clf.predict_proba(X_test)[:,1]
         resu_auc = np.round(roc_auc_score(y_test, y_pred),2).item()
+        resu_auc = "{:1.2f}".format(resu_auc)
+        # "{:1.2f}".format(456.67895) # check 
         # get gini-based feature importance
         resu_imp = (clf.feature_importances_).round(2).tolist()
+        resu_imp = ["{:1.2f}".format(a) for a  in resu_imp]
         # prepare results to be organized in a data frame
         col_values = [[resu_auc] + resu_imp]
         col_names = ['Importance_' + a for a in feat_sel]
@@ -119,14 +122,14 @@ for k in scenarios_di:
         ])
 
     # combine subplots to the final plot 
-    # the specs argument is a ****** pain in the ***, I still love plotly
+    # the specs argument is a ****** pain in the *** :-D   but I still love plotly
     fig = make_subplots(rows=2, cols=1,  specs=[[{'type': 'xy'}], [{'type': 'table'}]] , row_heights =[0.8, 0.2]  )
     fig.add_trace(fig1['data'][0], row=1, col=1)
     fig.add_trace(fig1['data'][1], row=1, col=1)
     fig.add_trace(fig2['data'][0], row=2, col=1)
 
     _ = fig.update_layout(template="plotly_dark")
-    _ = fig.update_layout(autosize=False,width=650,height=850,)
+    _ = fig.update_layout(autosize=False,width=750,height=850,)
     _ = fig.update_layout(title_text=k,title_font_size=15)
     fig.show()
 
