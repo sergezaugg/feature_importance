@@ -19,24 +19,29 @@ from plotly.subplots import make_subplots
 # (1 ) choose a scenario (the know truth)
 
 scenarios_di = { 
-    "not separable" : {
+    "Features are NOT informative" : {
         'n1' : 5000, 'mu1' : [0,0] , 'std1' : [1,1], 'corr1' : -0.9,
         'n2' : 5000, 'mu2' : [0,0] , 'std2' : [1,1], 'corr2' : -0.9,
         }
     , 
-    "scenario 0 - easy blobs" : {
+    "Both features are informative" : {
         'n1' : 5000, 'mu1' : [ 1, 1] , 'std1' : [1,1], 'corr1' : 0.7,
         'n2' : 5000, 'mu2' : [-1,-1] , 'std2' : [1,1], 'corr2' : 0.7
         }
     ,
-      "scenario 1 - parallel" : {
+    "only one features is informative " : {
+        'n1' : 5000, 'mu1' : [ 1, 1] , 'std1' : [1,1], 'corr1' : 0.0,
+        'n2' : 5000, 'mu2' : [-1, 1] , 'std2' : [1,1], 'corr2' : 0.0
+        }
+    ,
+    "Information in interaction - parallel" : {
         'n1' : 5000, 'mu1' : [-0.2,-0.2] , 'std1' : [1,1], 'corr1' : -0.98,
         'n2' : 5000, 'mu2' : [+0.2,+0.2] , 'std2' : [1,1], 'corr2' : -0.98
         }
     ,
-    "scenario 2 - cross" : {
-        'n1' : 5000, 'mu1' : [0,0] , 'std1' : [1,1], 'corr1' : -0.9,
-        'n2' : 5000, 'mu2' : [0,0] , 'std2' : [1,1], 'corr2' : +0.9
+    "Information in interaction - cross" : {
+        'n1' : 5000, 'mu1' : [0,0] , 'std1' : [1,1], 'corr1' : -0.98,
+        'n2' : 5000, 'mu2' : [0,0] , 'std2' : [1,1], 'corr2' : +0.98
         }
     ,
     }
