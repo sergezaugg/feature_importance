@@ -1,6 +1,9 @@
 #--------------------             
 # Author : Serge Zaugg
 # Description : 
+#  - Create synthetic datasets for supervised classification
+#  - Train models with several feature subsets
+#  - Assess overall classification performance vs. feature importance
 #--------------------
 
 import os
@@ -13,6 +16,7 @@ from sklearn.metrics import roc_auc_score
 from utils import make_dataset
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
+help(make_dataset)
 
 
 #-----------------------------------------------------
