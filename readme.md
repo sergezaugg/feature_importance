@@ -1,8 +1,9 @@
-# Assess procedures for "feature importance" against true feature importance
+# Can we really rank features according to their importance?
 
 This code is primarily didactic. 
 Researchers for whom I work as data scientist often wish a ranking of feature importance. 
 So here I made some intuitively appealing visuals to explain all this. 
+Three scenarios are briefly shown in this readme, but many more can be assessed by running the code.
 
 ## Rationale
 
