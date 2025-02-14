@@ -1,6 +1,6 @@
 #--------------------             
 # Author : Serge Zaugg
-# Description : some utility function used by  main.py
+# Description : some utility functions used by main.py
 #--------------------
 
 import os
