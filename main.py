@@ -18,41 +18,42 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 help(make_dataset)
 
+np.random.seed(seed=557)
 
 #-----------------------------------------------------
 # (1) choose a scenario (the know truth)
 
 scenarios_di = { 
-    "Features are NOT informative" : {
-        'n1' : 5000, 'mu1' : [0,0] , 'std1' : [1,1], 'corr1' : -0.9,
-        'n2' : 5000, 'mu2' : [0,0] , 'std2' : [1,1], 'corr2' : -0.9,
-        }
-    , 
-    "Only one features is informative " : {
-        'n1' : 5000, 'mu1' : [ 1, 1] , 'std1' : [1,1], 'corr1' : 0.0,
-        'n2' : 5000, 'mu2' : [-1, 1] , 'std2' : [1,1], 'corr2' : 0.0,
-        }
-    ,
     "Both features are informative" : {
-        'n1' : 5000, 'mu1' : [0,2] , 'std1' : [1,1], 'corr1' : 0.0,
-        'n2' : 5000, 'mu2' : [2,0] , 'std2' : [1,1], 'corr2' : 0.0,
-        }
+            'n1' : 10000, 'mu1' : [0,2] , 'std1' : [1,1], 'corr1' : 0.0,
+            'n2' : 10000, 'mu2' : [2,0] , 'std2' : [1,1], 'corr2' : 0.0,
+            }
     ,
-     "Both features are informative and redundant" : {
-        'n1' : 5000, 'mu1' : [ 1, 1] , 'std1' : [1,1], 'corr1' : +0.98,
-        'n2' : 5000, 'mu2' : [-1,-1] , 'std2' : [1,1], 'corr2' : +0.98,
-        }
+    "Both features are informative and redundant" : {
+            'n1' : 10000, 'mu1' : [ 1, 1] , 'std1' : [1,1], 'corr1' : +0.98,
+            'n2' : 10000, 'mu2' : [-1,-1] , 'std2' : [1,1], 'corr2' : +0.98,
+            }
     ,
     "Joint information from features needed - parallel" : {
-        'n1' : 5000, 'mu1' : [-0.2,-0.2] , 'std1' : [1,1], 'corr1' : -0.98,
-        'n2' : 5000, 'mu2' : [+0.2,+0.2] , 'std2' : [1,1], 'corr2' : -0.98,
+        'n1' : 10000, 'mu1' : [-0.2,-0.2] , 'std1' : [1,1], 'corr1' : -0.98,
+        'n2' : 10000, 'mu2' : [+0.2,+0.2] , 'std2' : [1,1], 'corr2' : -0.98,
         }
     ,
-    "Joint information from features needed - cross" : {
-        'n1' : 5000, 'mu1' : [0,0] , 'std1' : [1,1], 'corr1' : -0.98,
-        'n2' : 5000, 'mu2' : [0,0] , 'std2' : [1,1], 'corr2' : +0.98,
-        }
-    ,
+    # "Features are NOT informative" : {
+    #     'n1' : 10000, 'mu1' : [0,0] , 'std1' : [1,1], 'corr1' : -0.9,
+    #     'n2' : 10000, 'mu2' : [0,0] , 'std2' : [1,1], 'corr2' : -0.9,
+    #     }
+    # , 
+    # "Only one features is informative " : {
+    #     'n1' : 10000, 'mu1' : [ 1, 1] , 'std1' : [1,1], 'corr1' : 0.0,
+    #     'n2' : 10000, 'mu2' : [-1, 1] , 'std2' : [1,1], 'corr2' : 0.0,
+    #     }
+    # ,
+    # "Joint information from features needed - cross" : {
+    #     'n1' : 10000, 'mu1' : [0,0] , 'std1' : [1,1], 'corr1' : -0.98,
+    #     'n2' : 10000, 'mu2' : [0,0] , 'std2' : [1,1], 'corr2' : +0.98,
+    #     }
+    # ,
     }
 
 
