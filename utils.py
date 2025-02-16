@@ -70,3 +70,6 @@ if __name__ == "__main__":
     df = make_dataset(params = mvn_params) 
     df.head()
     df.shape
+
+    "{:1.2f}".format(456.67895) # check 
+
