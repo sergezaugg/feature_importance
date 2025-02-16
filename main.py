@@ -18,7 +18,10 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 help(make_dataset)
 
-np.random.seed(seed=557)
+random_seed = 557
+np.random.seed(seed=random_seed)
+
+
 
 #-----------------------------------------------------
 # (1) choose a scenario (the know truth)
@@ -30,13 +33,13 @@ scenarios_di = {
             }
     ,
     "Both features are informative and redundant" : {
-            'n1' : 10000, 'mu1' : [ 1, 1] , 'std1' : [1,1], 'corr1' : +0.98,
-            'n2' : 10000, 'mu2' : [-1,-1] , 'std2' : [1,1], 'corr2' : +0.98,
+            'n1' : 10000, 'mu1' : [ 1.4, 1.4] , 'std1' : [1,1], 'corr1' : +0.98,
+            'n2' : 10000, 'mu2' : [-1.4,-1.4] , 'std2' : [1,1], 'corr2' : +0.98,
             }
     ,
     "Joint information from features needed - parallel" : {
-        'n1' : 10000, 'mu1' : [-0.2,-0.2] , 'std1' : [1,1], 'corr1' : -0.98,
-        'n2' : 10000, 'mu2' : [+0.2,+0.2] , 'std2' : [1,1], 'corr2' : -0.98,
+        'n1' : 10000, 'mu1' : [-0.15,-0.15] , 'std1' : [1,1], 'corr1' : -0.98,
+        'n2' : 10000, 'mu2' : [+0.15,+0.15] , 'std2' : [1,1], 'corr2' : -0.98,
         }
     ,
     # "Features are NOT informative" : {
@@ -93,7 +96,7 @@ for k in scenarios_di:
         y = df['class']
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.60)
          # initialize a model for supervised classification 
-        clf = RandomForestClassifier(n_estimators=100, max_depth=20, random_state=0, max_features = 1)
+        clf = RandomForestClassifier(n_estimators=100, max_depth=20, max_features = 1, random_state=random_seed)
         clf.fit(X_train, y_train)
         # get overall performance as ROC-AUC
         y_pred = clf.predict_proba(X_test)[:,1]
