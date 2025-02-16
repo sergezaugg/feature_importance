@@ -17,12 +17,12 @@ Three scenarios are briefly shown in this readme, but many more can be assessed 
 
 *  **Figure 1:** Scenario that most people have in mind: Both features are almost independent and equally informative.
     * Removing f01 or f02 reduces predictive performance only a bit.
-*  **Figure 2:**, Both feature are equally informative but highly redundant.
+*  **Figure 2:** Both feature are equally informative but highly redundant.
     * Removing f01 or f02 hardly affects predictive performance.
-*  **Figure 3:**, Information for classification is jointly shared among both features (i.e they are complementary).
+*  **Figure 3:** Information for classification is jointly shared among both features (i.e they are complementary).
     * Removing f01 or f02 kills predictive performance (AUC drops to almost 0.50).
 *  **Take home** 
-    * **In all 3 scenarios the feature importance of full model is very similar (0.45, 0.45, 0.10).**
+    * **In all 3 scenarios the feature importance of full model is very similar, approx. (0.45, 0.45, 0.10).**
     * **However, the impact of removing f01 or f02 is very different!** 
 
 
