@@ -16,12 +16,9 @@ from sklearn.metrics import roc_auc_score
 from utils import make_dataset
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
-help(make_dataset)
 
 random_seed = 557
 np.random.seed(seed=random_seed)
-
-
 
 #-----------------------------------------------------
 # (1) choose a scenario (the know truth)
@@ -38,25 +35,25 @@ scenarios_di = {
             }
     ,
     "Joint information from features needed - parallel" : {
-        'n1' : 10000, 'mu1' : [-0.15,-0.15] , 'std1' : [1,1], 'corr1' : -0.98,
-        'n2' : 10000, 'mu2' : [+0.15,+0.15] , 'std2' : [1,1], 'corr2' : -0.98,
+        'n1' : 10000, 'mu1' : [-0.14,-0.14] , 'std1' : [1,1], 'corr1' : -0.98,
+        'n2' : 10000, 'mu2' : [+0.14,+0.14] , 'std2' : [1,1], 'corr2' : -0.98,
         }
     ,
-    # "Features are NOT informative" : {
-    #     'n1' : 10000, 'mu1' : [0,0] , 'std1' : [1,1], 'corr1' : -0.9,
-    #     'n2' : 10000, 'mu2' : [0,0] , 'std2' : [1,1], 'corr2' : -0.9,
-    #     }
-    # , 
-    # "Only one features is informative " : {
-    #     'n1' : 10000, 'mu1' : [ 1, 1] , 'std1' : [1,1], 'corr1' : 0.0,
-    #     'n2' : 10000, 'mu2' : [-1, 1] , 'std2' : [1,1], 'corr2' : 0.0,
-    #     }
-    # ,
-    # "Joint information from features needed - cross" : {
-    #     'n1' : 10000, 'mu1' : [0,0] , 'std1' : [1,1], 'corr1' : -0.98,
-    #     'n2' : 10000, 'mu2' : [0,0] , 'std2' : [1,1], 'corr2' : +0.98,
-    #     }
-    # ,
+    "Features are NOT informative" : {
+        'n1' : 10000, 'mu1' : [0,0] , 'std1' : [1,1], 'corr1' : -0.9,
+        'n2' : 10000, 'mu2' : [0,0] , 'std2' : [1,1], 'corr2' : -0.9,
+        }
+    , 
+    "Only one features is informative " : {
+        'n1' : 10000, 'mu1' : [ 1, 1] , 'std1' : [1,1], 'corr1' : 0.0,
+        'n2' : 10000, 'mu2' : [-1, 1] , 'std2' : [1,1], 'corr2' : 0.0,
+        }
+    ,
+    "Joint information from features needed - cross" : {
+        'n1' : 10000, 'mu1' : [0,0] , 'std1' : [1,1], 'corr1' : -0.98,
+        'n2' : 10000, 'mu2' : [0,0] , 'std2' : [1,1], 'corr2' : +0.98,
+        }
+    ,
     }
 
 
@@ -96,7 +93,7 @@ for k in scenarios_di:
         y = df['class']
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.60)
          # initialize a model for supervised classification 
-        clf = RandomForestClassifier(n_estimators=100, max_depth=20, max_features = 1, random_state=random_seed)
+        clf = RandomForestClassifier(n_estimators=200, max_depth=30, max_features = 1, random_state=random_seed)
         clf.fit(X_train, y_train)
         # get overall performance as ROC-AUC
         y_pred = clf.predict_proba(X_test)[:,1]
@@ -135,6 +132,8 @@ for k in scenarios_di:
     fig.add_trace(fig1['data'][0], row=1, col=1)
     fig.add_trace(fig1['data'][1], row=1, col=1)
     fig.add_trace(fig2['data'][0], row=2, col=1)
+    fig['layout']['xaxis']['title']='f01'
+    fig['layout']['yaxis']['title']='f02'
 
     _ = fig.update_layout(template="plotly_dark")
     _ = fig.update_layout(autosize=False,width=750,height=850,)
