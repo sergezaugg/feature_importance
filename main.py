@@ -3,7 +3,6 @@
 # Description : Create synthetic datasets for classification, train models, assess classification performance and feature importance
 #--------------------
 
-import os
 import numpy as np
 import pandas as pd
 import plotly.express as px
@@ -135,5 +134,3 @@ for k in scenarios_di:
     _ = fig.update_layout(autosize=False,width=750,height=950,)
     _ = fig.update_layout(title_text=k,title_font_size=15)
     fig.show()
-
-
