@@ -1,9 +1,6 @@
 #--------------------             
 # Author : Serge Zaugg
-# Description : 
-#  - Create synthetic datasets for supervised classification
-#  - Train models with several feature subsets
-#  - Assess overall classification performance vs. feature importance
+# Description : Create synthetic datasets for classification, train models, assess classification performance and feature importance
 #--------------------
 
 import os
@@ -20,8 +17,8 @@ from plotly.subplots import make_subplots
 random_seed = 557
 np.random.seed(seed=random_seed)
 
-#-----------------------------------------------------
-# (1) choose a scenario (the know truth)
+#-----------------------------
+# (1) Define several scenarios 
 
 scenarios_di = { 
     "Both features are informative" : {
@@ -57,8 +54,19 @@ scenarios_di = {
     }
 
 
-#-----------------------------------------------------
-# (2) loop over scenarios 
+#--------------------------------
+# (2) define several feature sets
+feat_li = [
+    ["f01", "f02", "f03"],
+    ["f01", "f03"],
+    ["f02", "f03"],
+    ["f01", "f02"],
+    ["f03"],
+    ]
+
+
+#-----------------------------------------
+# (3) loop over scenarios and feature sets
 for k in scenarios_di:
     print(k)
     mvn_params = scenarios_di[k]
@@ -77,15 +85,6 @@ for k in scenarios_di:
         )
     fig1.update_traces(marker=dict(size=5))
     # fig1.show()
-
-    # define several feature sets
-    feat_li = [
-        ["f01", "f02", "f03"],
-        ["f01", "f03"],
-        ["f02", "f03"],
-        ["f01", "f02"],
-        ["f03"],
-        ]
 
     # loop over feature sets and fit RFO models
     df_resu = []
@@ -136,11 +135,5 @@ for k in scenarios_di:
     _ = fig.update_layout(autosize=False,width=750,height=950,)
     _ = fig.update_layout(title_text=k,title_font_size=15)
     fig.show()
-
-
-
-
-
-
 
 

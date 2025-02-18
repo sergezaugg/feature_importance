@@ -1,6 +1,6 @@
 #--------------------             
 # Author : Serge Zaugg
-# Description : some utility functions used by main.py
+# Description : Utility functions used by main.py
 #--------------------
 
 import os
@@ -60,7 +60,6 @@ if __name__ == "__main__":
     xx.shape
     xx.std(0)
     pd.DataFrame(xx).corr()
-
 
     mvn_params = {
         'n1' : 100, 'mu1' : [0,0] , 'std1' : [1,1], 'corr1' : -0.9,
