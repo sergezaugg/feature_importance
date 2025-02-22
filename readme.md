@@ -19,14 +19,12 @@ All this is summarized on plots that allow to explain the strengths and limitati
 <span style="color:violet">**Figure 1:**</span> 
 Scenario that most people have in mind: Both features are almost independent and both are informative.
 Removing f01 or f02 reduces predictive performance only a bit.
-
 <span style="color:violet">**Figure 2:**</span> 
 Both feature are equally informative but highly redundant.
 Removing f01 or f02 hardly affects predictive performance.
-
 <span style="color:violet">**Figure 3:**</span> 
 Information for classification is jointly shared among both features (i.e they are complementary).
-Removing f01 or f02 **kills** predictive performance (AUC drops to almost 0.50).
+Removing f01 or f02 kills predictive performance (AUC drops to almost 0.50).
 
 **TAKE HOME MESSAGE:**
 
