@@ -28,7 +28,8 @@ Removing f01 or f02 hardly affects predictive performance.
 Information for classification is jointly shared among both features (i.e they are complementary).
 Removing f01 or f02 **kills** predictive performance (AUC drops to almost 0.50).
 
-<span style="color:red">**TAKE HOME MESSAGE:**</span> 
+**TAKE HOME MESSAGE:**
+
 In all 3 scenarios the feature importance of the full model is very similar, approx. (0.45, 0.45, 0.10).
 However, the impact of removing f01 or f02 is very different!
 Thinking of individual feature importance does often not make sense
@@ -47,20 +48,18 @@ It is better to focus on feature sets and how they affect predictive performance
 
 ![](./pics/figure03.png)
 
-
 **DEPENDENCIES:**
 * Developed under Python 3.12.8
 * First make a venv, then:
-```
-pip install -r requirements.txt
-```
+* pip install -r requirements.txt
 
 **USAGE:**
 * There is only one script **main.py** meant for interactive use.
 * Several scenarios can be defined in the dict at the top of the script
 * note that a few helper functions are imported from **utils.py**
 
-### Appendix
+**APPENDIX:**
+
 Some additional didactically interesting scenarios are previewed here
 
 ![](./pics/figure0456_small.png)
