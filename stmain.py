@@ -30,20 +30,39 @@ feat_li = [
 
 st.set_page_config(layout="wide")
 
+st.title('Can we really rank features according to their importance?')
 
-col_main01, col_main02, col_space01, col_main1, = st.columns([0.10, 0.10, 0.05, 0.80])
-with col_main01:
-    st.subheader("")
-    st.text("Class 1")
+st.markdown(
+'''    
+:violet[**SUMMARY:**]
+:blue[This dashboard is primarily didactic. 
+People often wish a ranking of feature importance. 
+So here I provide some visuals to explain this. 
+Many scenarios can be assessed by playing with the sliders.]
+:rainbow[Play and have fun!] 
+
+:violet[**METHODS:**]
+:blue[Synthetic datasets for supervised classification are created with one binary class (the target) and 3 continuous features (the predictors).
+The first two features (f01 and f02) can be informative for classification, while the third (f03) is always non-informative.
+How the first two features inform classification can be actively chosen (sliders on the left).
+Random Forest classifiers are trained for 'all 3 features' and for smaller subsets of the features.
+The predictive performance (ROC-AUC) is obtained from a test set and the **impurity-based feature importance** is computed.]  
+''')
+
+
+col_a, col_b, col_space01, col_c, col_d, = st.columns([0.10, 0.10, 0.05, 0.50, 0.5])
+
+
+with col_a:
+    st.subheader("Class 1")
     numb1 = st.slider("N",     min_value=  10,   max_value=1000, value=100, key="slide_n1")
     mean1x = st.slider("mean x",  min_value= -5.0,  max_value=+5.0, value=0.0, key="slide_mu1x")
     mean1y = st.slider("mean y",  min_value= -5.0,  max_value=+5.0, value=0.0, key="slide_mu1y")
     stdv1x = st.slider("stdev x", min_value= +0.01, max_value=10.0, value=1.0, key="slide_std1x")
     stdv1y = st.slider("stdev y", min_value= +0.01, max_value=10.0, value=1.0, key="slide_std1y")
     corr1 = st.slider("corr",  min_value=-1.0, max_value=+1.0, value=0.5, key="slide_corr1")
-with col_main02:   
-    st.subheader("")
-    st.text("Class 2")
+with col_b:   
+    st.subheader("Class 2")
     numb2 = st.slider("N",     min_value=  10,   max_value=1000, value=100, key="slide_n2")
     mean2x = st.slider("mean x",  min_value= -5.0,  max_value=+5.0, value=0.0, key="slide_mu2x")
     mean2y = st.slider("mean y",  min_value= -5.0,  max_value=+5.0, value=0.0, key="slide_mu2y")
@@ -57,40 +76,31 @@ scenario_di = {
         'n2' : numb2, 'mu2' : [mean2x, mean2y] , 'std2' : [stdv2x, stdv2y], 'corr2' : corr2,
         }
 
-# st.write("Values:", scenario_di)
 
-with col_main1:
+df_data = make_dataset(params = scenario_di) 
 
-    df_data = make_dataset(params = scenario_di) 
+df_resu = fit_rf_get_metrics(df_data, feat_li, rfo_n_trees = rfo_n_trees, random_seed = random_seed)
 
-    df_resu = fit_rf_get_metrics(df_data, feat_li, rfo_n_trees = rfo_n_trees, random_seed = random_seed)
-
-    fig1 = px.scatter(
-        data_frame = df_data,
-        x = 'f01',
-        y = 'f02',
-        color = 'class',
-        width = 600,
-        height = 600,
-        title = "",
-        color_discrete_sequence=['#ee33ff', '#33aaff']
-        )
-    _ = fig1.update_xaxes(showline = True, linecolor = 'white', linewidth = 1, row = 1, col = 1, mirror = True)
-    _ = fig1.update_yaxes(showline = True, linecolor = 'white', linewidth = 1, row = 1, col = 1, mirror = True)
-    _ = fig1.update_layout(paper_bgcolor="#112233",)
-    fig1.update_traces(marker=dict(size=5))
+fig1 = px.scatter(
+    data_frame = df_data,
+    x = 'f01',
+    y = 'f02',
+    color = 'class',
+    width = 600,
+    height = 600,
+    title = "",
+    color_discrete_sequence=['#ee33ff', '#33aaff']
+    )
+_ = fig1.update_xaxes(showline = True, linecolor = 'white', linewidth = 1, row = 1, col = 1, mirror = True)
+_ = fig1.update_yaxes(showline = True, linecolor = 'white', linewidth = 1, row = 1, col = 1, mirror = True)
+_ = fig1.update_layout(paper_bgcolor="#112233",)
+fig1.update_traces(marker=dict(size=5))
 
 
-    # 
-
-    st.title('Feature importance')
-
-
-    col0, col1 = st.columns(2*[1,])
-    with col0:
-        st.subheader("Scatterplot of scenario")
-        st.plotly_chart(fig1, use_container_width=False)
-    with col1:
-        st.subheader("Predictive performance and feature importance")
-        st.dataframe(df_resu)  
+with col_c:
+    st.subheader("Scatterplot of scenario")
+    st.plotly_chart(fig1, use_container_width=False)
+with col_d:
+    st.subheader("Predictive performance and feature importance")
+    st.dataframe(df_resu, hide_index=True)  
 
