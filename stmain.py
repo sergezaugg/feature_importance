@@ -14,8 +14,6 @@ import plotly.graph_objects as go
 random_seed = 557
 np.random.seed(seed=random_seed)
 
-# rfo_n_trees = 10
-
 feat_li = [
     ["f01", "f02", "f03"],
     ["f01", "f03"],
@@ -23,7 +21,6 @@ feat_li = [
     ["f01", "f02"],
     ["f03"],
     ]
-
 
 #--------------------------------
 # streamlit start here 
