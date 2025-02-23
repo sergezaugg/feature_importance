@@ -31,21 +31,7 @@ col_aa, col_bb, = st.columns([0.85, 0.15])
 
 with col_aa: 
     st.title('Can we really rank features according to their importance?')
-    st.markdown(
-    '''    
-    :violet[**SUMMARY:**]
-    :blue[This dashboard is primarily didactic. 
-    People often wish a ranking of feature importance. 
-    So here I provide some visuals to explain this. 
-    Many scenarios can be assessed by playing with the sliders.
-    Details see : https://github.com/sergezaugg/feature_importance.]
-    :violet[**METHODS:**]
-    :blue[Synthetic datasets for supervised classification are created with one binary class (the target) and 3 continuous features (the predictors).
-    The first two features (f01 and f02) can be informative for classification, while the third (f03) is always non-informative.
-    How the first two features inform classification can be actively chosen (sliders on the left).
-    Random Forest classifiers are trained for 'all 3 features' and for smaller subsets of the features.
-    The predictive performance (ROC-AUC) is obtained from a test set and the **impurity-based feature importance** is computed.]  
-    ''')
+   
 
 with col_bb:
     st.text("more")
@@ -55,8 +41,27 @@ col_a, col_b, col_space01, col_c, col_d, = st.columns([0.10, 0.10, 0.05, 0.50, 0
 
 
 
+    # "Both features informative",
+    # "Both features informative and redundant" ,
+    # "Joint information from features - parallel" ,
+    # "Features NOT informative" ,
+    # "Only one features informative" ,
+    # "Joint information from features - cross" ,
+       
+
+
+
+preset_options = [
+    "preset1", 
+    "preset2", 
+    "preset3",
+    "preset4", 
+    "preset5", 
+    "preset6",  
+    ]
+
 with col_a:
-    option1 = st.selectbox("Select", ("preset1", "preset2", "preset3"), key = 'sel02')
+    option1 = st.selectbox("Select", preset_options, key = 'sel02')
 
 if option1 == "preset1":
     scenario_di = {
@@ -72,6 +77,21 @@ if option1 == "preset3":
     scenario_di = {
         'n1' : 10000, 'mu1' : [-0.14, -0.14] , 'std1' : [1.0,1.0], 'corr1' : -0.98,
         'n2' : 10000, 'mu2' : [+0.14, +0.14] , 'std2' : [1.0,1.0], 'corr2' : -0.98,
+        }
+if option1 == "preset4":
+    scenario_di ={
+        'n1' : 10000, 'mu1' : [0.0, 0.0] , 'std1' : [1,1], 'corr1' : -0.90,
+        'n2' : 10000, 'mu2' : [0.0, 0.0] , 'std2' : [1,1], 'corr2' : -0.90,
+        }
+if option1 == "preset5":
+    scenario_di ={
+        'n1' : 10000, 'mu1' : [ 1.0, 1.0] , 'std1' : [1,1], 'corr1' : 0.00,
+        'n2' : 10000, 'mu2' : [-1.0, 1.0] , 'std2' : [1,1], 'corr2' : 0.00,
+        }
+if option1 == "preset6":
+    scenario_di = {
+        'n1' : 10000, 'mu1' : [0.0, 0.0] , 'std1' : [1,1], 'corr1' : -0.98,
+        'n2' : 10000, 'mu2' : [0.0, 0.0] , 'std2' : [1,1], 'corr2' : +0.98,
         }
 
 
