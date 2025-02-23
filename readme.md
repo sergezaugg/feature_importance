@@ -5,6 +5,8 @@ Researchers for whom I work as data scientist often wish a ranking of feature im
 So here I provide some intuitively appealing visuals to explain this. 
 Three scenarios are briefly shown in this readme, but many more can be assessed by running the code.
 
+**Interactive dashboard here https://featureimportance.streamlit.app**
+
 **ML SUMMARY:**
 
 Synthetic datasets for supervised classification are created with one binary class (the target) and 3 continuous features (the predictors).
