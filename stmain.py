@@ -30,10 +30,10 @@ feat_li = [
 
 st.set_page_config(layout="wide")
 
-st.title('Feature importance')
 
-col_main01, col_main02,col_main1, = st.columns([0.10, 0.10, 0.80])
+col_main01, col_main02, col_space01, col_main1, = st.columns([0.10, 0.10, 0.05, 0.80])
 with col_main01:
+    st.subheader("")
     st.text("Class 1")
     numb1 = st.slider("N",     min_value=  10,   max_value=1000, value=100, key="slide_n1")
     mean1x = st.slider("mean x",  min_value= -5.0,  max_value=+5.0, value=0.0, key="slide_mu1x")
@@ -42,6 +42,7 @@ with col_main01:
     stdv1y = st.slider("stdev y", min_value= +0.01, max_value=10.0, value=1.0, key="slide_std1y")
     corr1 = st.slider("corr",  min_value=-1.0, max_value=+1.0, value=0.5, key="slide_corr1")
 with col_main02:   
+    st.subheader("")
     st.text("Class 2")
     numb2 = st.slider("N",     min_value=  10,   max_value=1000, value=100, key="slide_n2")
     mean2x = st.slider("mean x",  min_value= -5.0,  max_value=+5.0, value=0.0, key="slide_mu2x")
@@ -71,19 +72,25 @@ with col_main1:
         color = 'class',
         width = 600,
         height = 600,
-        title = "aaa",
+        title = "",
         color_discrete_sequence=['#ee33ff', '#33aaff']
         )
     _ = fig1.update_xaxes(showline = True, linecolor = 'white', linewidth = 1, row = 1, col = 1, mirror = True)
     _ = fig1.update_yaxes(showline = True, linecolor = 'white', linewidth = 1, row = 1, col = 1, mirror = True)
+    _ = fig1.update_layout(paper_bgcolor="#112233",)
     fig1.update_traces(marker=dict(size=5))
 
 
     # 
+
+    st.title('Feature importance')
+
+
     col0, col1 = st.columns(2*[1,])
     with col0:
+        st.subheader("Scatterplot of scenario")
         st.plotly_chart(fig1, use_container_width=False)
     with col1:
-        st.title("")
+        st.subheader("Predictive performance and feature importance")
         st.dataframe(df_resu)  
 
