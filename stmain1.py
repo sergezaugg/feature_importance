@@ -11,15 +11,15 @@ import plotly.graph_objects as go
 
 # streamlit run stmain.py
 
-random_seed = 557
+random_seed = 554
 np.random.seed(seed=random_seed)
 
 feat_li = [
     ["f01", "f02", "f03"],
     ["f01", "f03"],
     ["f02", "f03"],
-    ["f01", "f02"],
-    ["f03"],
+    # ["f01", "f02"],
+    # ["f03"],
     ]
 
 #--------------------------------
@@ -34,7 +34,8 @@ with col_aa:
    
 with col_bb:
     st.text("more")
-    rfo_n_trees = st.number_input("N trees random forest", min_value=10, max_value=100, value=10, step=10)
+    rfo_n_trees = st.number_input("N trees random forest", min_value=10, max_value=100, value=30, step=10)
+    max_features = st.number_input("max features", min_value=1, max_value=3, value=1, step=1)
    
 col_a, col_space01, col_c, col_d, = st.columns([0.20, 0.05, 0.50, 0.5])
 
@@ -83,7 +84,7 @@ if option1 == preset_options[5]:
 
 df_data = make_dataset(params = scenario_di) 
 
-df_resu = fit_rf_get_metrics(df_data, feat_li, rfo_n_trees = rfo_n_trees, random_seed = random_seed, max_features = 1, max_depth = 30)
+df_resu = fit_rf_get_metrics(df_data, feat_li, rfo_n_trees = rfo_n_trees, random_seed = random_seed, max_features = max_features, max_depth = 30)
 
 
 fig1 = px.scatter(
