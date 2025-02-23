@@ -31,22 +31,31 @@ st.title('Feature importance')
 #-----------------------------
 # (1) Define several scenarios 
 
-mu1 = st.slider("Select mean class 1", 0.0, 100.0, (25.0, 75.0), key="slide_mu1")
-mu2 = st.slider("Select mean class 1", 0.0, 100.0, (25.0, 75.0), key="slide_mu2")
+col1, col2, col3, col4, col5, col6 = st.columns([1,1,1,1,1,1])
+with col1:
+    numb1 = st.slider("N 1",     min_value=  10,   max_value=1000, value=100, key="slide_n1")
+with col2:
+    mean1x = st.slider("mean 1x",  min_value= -5.0,  max_value=+5.0, value=25.0, key="slide_mu1x")
+with col3:
+    mean1y = st.slider("mean 1y",  min_value= -5.0,  max_value=+5.0, value=25.0, key="slide_mu1y")
+with col4:
+    stdv1x = st.slider("stdev 1x", min_value= +0.01, max_value=10.0, value=1.0, key="slide_std1x")
+with col5:
+    stdv1y = st.slider("stdev 1y", min_value= +0.01, max_value=10.0, value=1.0, key="slide_std1y")
+with col6:
+    corr1 = st.slider("corr 1",  min_value=-1.0, max_value=-1.0, value=0.2, key="slide_corr1")
 
-st.write("Values:", mu1)
-st.write("Values:", mu2)
-
+    
 
 
 scenarios_di = { 
-    "Both features are informative" : {
-        'n1' : 10000, 'mu1' : mu1 , 'std1' : [1,1], 'corr1' : 0.00,
-        'n2' : 10000, 'mu2' : mu2 , 'std2' : [1,1], 'corr2' : 0.00,
+    "Scenario custom" : {
+        'n1' : numb1, 'mu1' : [mean1x, mean1y] , 'std1' : [stdv1x, stdv1y], 'corr1' : corr1,
+        'n2' : 10, 'mu2' : [1,1] , 'std2' : [1,1], 'corr2' : 0.00,
         }}
 
 
-# st.write("Values:", scenarios_di)
+st.write("Values:", scenarios_di)
 
 
 
