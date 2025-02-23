@@ -48,28 +48,28 @@ with col_aa:
     ''')
 
 with col_bb:
-    st.text("Advanced parameters")
+    st.text("more")
     rfo_n_trees = st.number_input("N trees random forest", min_value=10, max_value=100, value=10, step=10)
+   
 
 col_a, col_b, col_space01, col_c, col_d, = st.columns([0.10, 0.10, 0.05, 0.50, 0.5])
 
 with col_a:
-    st.subheader("Class 1")
-    numb1 = st.slider("N",     min_value=  10,   max_value=1000, value=100, key="slide_n1")
-    mean1x = st.slider("mean x",  min_value= -5.0,  max_value=+5.0, value=0.0, key="slide_mu1x")
-    mean1y = st.slider("mean y",  min_value= -5.0,  max_value=+5.0, value=0.0, key="slide_mu1y")
+    st.subheader("Class A")
+    numb1 = st.slider("N",     min_value=  10,   max_value=1000,    value=100,      key="slide_n1")
+    mean1x = st.slider("mean x",  min_value= -5.0,  max_value=+5.0, value=1.0,  key="slide_mu1x")
+    mean1y = st.slider("mean y",  min_value= -5.0,  max_value=+5.0, value=1.0,  key="slide_mu1y")
     stdv1x = st.slider("stdev x", min_value= +0.01, max_value=10.0, value=1.0, key="slide_std1x")
     stdv1y = st.slider("stdev y", min_value= +0.01, max_value=10.0, value=1.0, key="slide_std1y")
-    corr1 = st.slider("corr",  min_value=-1.0, max_value=+1.0, value=0.5, key="slide_corr1")
+    corr1 = st.slider("corr",  min_value=-1.0, max_value=+1.0,      value=0.9 ,  key="slide_corr1")
 with col_b:   
-    st.subheader("Class 2")
-    numb2 = st.slider("N",     min_value=  10,   max_value=1000, value=100, key="slide_n2")
-    mean2x = st.slider("mean x",  min_value= -5.0,  max_value=+5.0, value=0.0, key="slide_mu2x")
-    mean2y = st.slider("mean y",  min_value= -5.0,  max_value=+5.0, value=0.0, key="slide_mu2y")
+    st.subheader("Class B")
+    numb2 = st.slider("N",     min_value=  10,   max_value=1000,    value=100,      key="slide_n2")
+    mean2x = st.slider("mean x",  min_value= -5.0,  max_value=+5.0, value=1.0,  key="slide_mu2x")
+    mean2y = st.slider("mean y",  min_value= -5.0,  max_value=+5.0, value=1.0,  key="slide_mu2y")
     stdv2x = st.slider("stdev x", min_value= +0.01, max_value=10.0, value=1.0, key="slide_std2x")
     stdv2y = st.slider("stdev y", min_value= +0.01, max_value=10.0, value=1.0, key="slide_std2y")
-    corr2 = st.slider("corr",  min_value=-1.0, max_value=+1.0, value=-0.5, key="slide_corr2")
-
+    corr2 = st.slider("corr",  min_value=-1.0, max_value=+1.0,      value=-0.9,   key="slide_corr2")
 
 scenario_di = { 
         'n1' : numb1, 'mu1' : [mean1x, mean1y] , 'std1' : [stdv1x, stdv1y], 'corr1' : corr1,
@@ -80,9 +80,6 @@ scenario_di = {
 df_data = make_dataset(params = scenario_di) 
 
 df_resu = fit_rf_get_metrics(df_data, feat_li, rfo_n_trees = rfo_n_trees, random_seed = random_seed, max_features = 1, max_depth = 30)
-
-
-
 
 
 fig1 = px.scatter(
@@ -109,3 +106,57 @@ with col_d:
     st.dataframe(df_resu, hide_index=True)  
 
 
+# ---------------------------------
+
+
+
+
+# option1 = st.selectbox("Select", ("preset1", "preset2", "preset3"), key = 'sel02')
+
+# if option1 == "preset1":
+#     di = {
+#         'n1' : 10000, 'mu1' : [0.0, 2.0] , 'std1' : [1.0,1.0], 'corr1' : 0.00,
+#         'n2' : 10000, 'mu2' : [2.0, 0.0] , 'std2' : [1.0,1.0], 'corr2' : 0.00,
+#         }
+# if option1 == "preset2":
+#     di = {
+#         'n1' : 10000, 'mu1' : [ 1.4,  1.4] , 'std1' : [1.0,1.0], 'corr1' : +0.98,
+#         'n2' : 10000, 'mu2' : [-1.4, -1.4] , 'std2' : [1.0,1.0], 'corr2' : +0.98,
+#         }
+# if option1 == "preset3":
+#     di = {
+#         'n1' : 10000, 'mu1' : [-0.14, -0.14] , 'std1' : [1.0,1.0], 'corr1' : -0.98,
+#         'n2' : 10000, 'mu2' : [+0.14, +0.14] , 'std2' : [1.0,1.0], 'corr2' : -0.98,
+#         }
+    
+
+# df_data2 = make_dataset(params = di) 
+
+# df_resu2 = fit_rf_get_metrics(df_data2, feat_li, rfo_n_trees = rfo_n_trees, random_seed = random_seed, max_features = 1, max_depth = 30)
+
+
+# fig1 = px.scatter(
+#     data_frame = df_data,
+#     x = 'f01',
+#     y = 'f02',
+#     color = 'class',
+#     width = 600,
+#     height = 600,
+#     title = "",
+#     color_discrete_sequence=['#ee33ff', '#33aaff']
+#     )
+# _ = fig1.update_xaxes(showline = True, linecolor = 'white', linewidth = 1, row = 1, col = 1, mirror = True)
+# _ = fig1.update_yaxes(showline = True, linecolor = 'white', linewidth = 1, row = 1, col = 1, mirror = True)
+# _ = fig1.update_layout(paper_bgcolor="#112233",)
+# fig1.update_traces(marker=dict(size=5))
+
+
+# with col_c:
+#     st.subheader("Scatterplot of scenario")
+#     st.plotly_chart(fig1, use_container_width=False, key = "bbb")
+# with col_d:
+#     st.subheader("Predictive performance and feature importance")
+#     st.dataframe(df_resu2, hide_index=True, key = "ddd")  
+
+
+# # ---------------------------------
