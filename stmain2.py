@@ -25,7 +25,7 @@ feat_li = [
 #--------------------------------
 # streamlit start here 
 
-st.set_page_config(layout="wide")
+# st.set_page_config(layout="wide")
 
 col_aa, col_bb, = st.columns([0.85, 0.15])
 
@@ -62,11 +62,9 @@ scenario_di = {
         'n2' : numb2, 'mu2' : [mean2x, mean2y] , 'std2' : [stdv2x, stdv2y], 'corr2' : corr2,
         }
 
-
 df_data = make_dataset(params = scenario_di) 
 
 df_resu = fit_rf_get_metrics(df_data, feat_li, rfo_n_trees = rfo_n_trees, random_seed = random_seed, max_features = 1, max_depth = 30)
-
 
 fig1 = px.scatter(
     data_frame = df_data,
@@ -91,58 +89,3 @@ with col_d:
     st.subheader("Predictive performance and feature importance")
     st.dataframe(df_resu, hide_index=True)  
 
-
-# ---------------------------------
-
-
-
-
-# option1 = st.selectbox("Select", ("preset1", "preset2", "preset3"), key = 'sel02')
-
-# if option1 == "preset1":
-#     di = {
-#         'n1' : 10000, 'mu1' : [0.0, 2.0] , 'std1' : [1.0,1.0], 'corr1' : 0.00,
-#         'n2' : 10000, 'mu2' : [2.0, 0.0] , 'std2' : [1.0,1.0], 'corr2' : 0.00,
-#         }
-# if option1 == "preset2":
-#     di = {
-#         'n1' : 10000, 'mu1' : [ 1.4,  1.4] , 'std1' : [1.0,1.0], 'corr1' : +0.98,
-#         'n2' : 10000, 'mu2' : [-1.4, -1.4] , 'std2' : [1.0,1.0], 'corr2' : +0.98,
-#         }
-# if option1 == "preset3":
-#     di = {
-#         'n1' : 10000, 'mu1' : [-0.14, -0.14] , 'std1' : [1.0,1.0], 'corr1' : -0.98,
-#         'n2' : 10000, 'mu2' : [+0.14, +0.14] , 'std2' : [1.0,1.0], 'corr2' : -0.98,
-#         }
-    
-
-# df_data2 = make_dataset(params = di) 
-
-# df_resu2 = fit_rf_get_metrics(df_data2, feat_li, rfo_n_trees = rfo_n_trees, random_seed = random_seed, max_features = 1, max_depth = 30)
-
-
-# fig1 = px.scatter(
-#     data_frame = df_data,
-#     x = 'f01',
-#     y = 'f02',
-#     color = 'class',
-#     width = 600,
-#     height = 600,
-#     title = "",
-#     color_discrete_sequence=['#ee33ff', '#33aaff']
-#     )
-# _ = fig1.update_xaxes(showline = True, linecolor = 'white', linewidth = 1, row = 1, col = 1, mirror = True)
-# _ = fig1.update_yaxes(showline = True, linecolor = 'white', linewidth = 1, row = 1, col = 1, mirror = True)
-# _ = fig1.update_layout(paper_bgcolor="#112233",)
-# fig1.update_traces(marker=dict(size=5))
-
-
-# with col_c:
-#     st.subheader("Scatterplot of scenario")
-#     st.plotly_chart(fig1, use_container_width=False, key = "bbb")
-# with col_d:
-#     st.subheader("Predictive performance and feature importance")
-#     st.dataframe(df_resu2, hide_index=True, key = "ddd")  
-
-
-# # ---------------------------------

@@ -29,12 +29,8 @@ with col_aa:
 
     :violet[**RESULTS:**]
 
-    :blue[For main results see **Predefined scenarios** and to perform new experiments see **Define new scenarios**]
+    :blue[For main results see *Predefined scenarios* and to perform new experiments see *Define new scenarios*]
     ''')
-
-    st.page_link('stmain1.py', label="Predefined scenarios")
-    st.page_link('stmain2.py', label="Define new scenarios")
-
 
     st.markdown(
     '''    
