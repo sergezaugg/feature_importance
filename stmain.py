@@ -14,7 +14,7 @@ import plotly.graph_objects as go
 random_seed = 557
 np.random.seed(seed=random_seed)
 
-rfo_n_trees = 10
+# rfo_n_trees = 10
 
 feat_li = [
     ["f01", "f02", "f03"],
@@ -30,28 +30,31 @@ feat_li = [
 
 st.set_page_config(layout="wide")
 
-st.title('Can we really rank features according to their importance?')
+col_aa, col_bb, = st.columns([0.85, 0.15])
 
-st.markdown(
-'''    
-:violet[**SUMMARY:**]
-:blue[This dashboard is primarily didactic. 
-People often wish a ranking of feature importance. 
-So here I provide some visuals to explain this. 
-Many scenarios can be assessed by playing with the sliders.]
-:rainbow[Play and have fun!] 
+with col_aa: 
+    st.title('Can we really rank features according to their importance?')
+    st.markdown(
+    '''    
+    :violet[**SUMMARY:**]
+    :blue[This dashboard is primarily didactic. 
+    People often wish a ranking of feature importance. 
+    So here I provide some visuals to explain this. 
+    Many scenarios can be assessed by playing with the sliders.
+    Details see : https://github.com/sergezaugg/feature_importance.]
+    :violet[**METHODS:**]
+    :blue[Synthetic datasets for supervised classification are created with one binary class (the target) and 3 continuous features (the predictors).
+    The first two features (f01 and f02) can be informative for classification, while the third (f03) is always non-informative.
+    How the first two features inform classification can be actively chosen (sliders on the left).
+    Random Forest classifiers are trained for 'all 3 features' and for smaller subsets of the features.
+    The predictive performance (ROC-AUC) is obtained from a test set and the **impurity-based feature importance** is computed.]  
+    ''')
 
-:violet[**METHODS:**]
-:blue[Synthetic datasets for supervised classification are created with one binary class (the target) and 3 continuous features (the predictors).
-The first two features (f01 and f02) can be informative for classification, while the third (f03) is always non-informative.
-How the first two features inform classification can be actively chosen (sliders on the left).
-Random Forest classifiers are trained for 'all 3 features' and for smaller subsets of the features.
-The predictive performance (ROC-AUC) is obtained from a test set and the **impurity-based feature importance** is computed.]  
-''')
-
+with col_bb:
+    st.text("Advanced parameters")
+    rfo_n_trees = st.number_input("N trees random forest", min_value=10, max_value=100, value=10, step=10)
 
 col_a, col_b, col_space01, col_c, col_d, = st.columns([0.10, 0.10, 0.05, 0.50, 0.5])
-
 
 with col_a:
     st.subheader("Class 1")
@@ -103,4 +106,5 @@ with col_c:
 with col_d:
     st.subheader("Predictive performance and feature importance")
     st.dataframe(df_resu, hide_index=True)  
+
 
