@@ -79,7 +79,11 @@ scenario_di = {
 
 df_data = make_dataset(params = scenario_di) 
 
-df_resu = fit_rf_get_metrics(df_data, feat_li, rfo_n_trees = rfo_n_trees, random_seed = random_seed)
+df_resu = fit_rf_get_metrics(df_data, feat_li, rfo_n_trees = rfo_n_trees, random_seed = random_seed, max_features = 1, max_depth = 30)
+
+
+
+
 
 fig1 = px.scatter(
     data_frame = df_data,

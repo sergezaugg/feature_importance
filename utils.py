@@ -7,7 +7,6 @@ import os
 import numpy as np
 import pandas as pd
 import streamlit as st
-
 import plotly.express as px
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
@@ -61,6 +60,40 @@ def make_dataset(params):
 
 
 
+    
+
+# loop over feature sets and fit RFO models
+@st.cache_data
+def fit_rf_get_metrics(df_data, feat_li, rfo_n_trees = 10, random_seed = 55, max_features = 1, max_depth = 30):
+    df_resu = []
+    for feat_sel in feat_li:
+        X = df_data[feat_sel]
+        y = df_data['class']
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.60)
+            # initialize a model for supervised classification 
+        clf = RandomForestClassifier(n_estimators=rfo_n_trees, max_depth=max_depth, max_features = max_features, random_state=random_seed)
+        clf.fit(X_train, y_train)
+        # get overall performance as ROC-AUC
+        y_pred = clf.predict_proba(X_test)[:,1]
+        resu_auc = np.round(roc_auc_score(y_test, y_pred),2).item()
+        resu_auc = "{:1.2f}".format(resu_auc)
+        # get gini-based feature importance
+        resu_imp = (clf.feature_importances_).round(2).tolist()
+        resu_imp = ["{:1.2f}".format(a) for a  in resu_imp]
+        # prepare results to be organized in a data frame
+        col_values = [[resu_auc] + resu_imp]
+        col_names = ['Importance_' + a for a in feat_sel]
+        col_names = ['AUC_Test'] + col_names
+        df_t = pd.DataFrame(col_values, columns = col_names)
+        # append meta-data on the right of df 
+        incl_features_str = ", ".join(feat_sel)
+        df_t['Included_Features'] = incl_features_str
+        # store in list 
+        df_resu.append(df_t)
+    df_resu = pd.concat(df_resu)
+    return(df_resu)
+
+
 
 
 # devel code - supress execution if this is imported as module 
@@ -85,34 +118,3 @@ if __name__ == "__main__":
 
 
 
-
-# loop over feature sets and fit RFO models
-@st.cache_data
-def fit_rf_get_metrics(df_data, feat_li, rfo_n_trees = 5, random_seed = 123):
-    df_resu = []
-    for feat_sel in feat_li:
-        X = df_data[feat_sel]
-        y = df_data['class']
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.60)
-            # initialize a model for supervised classification 
-        clf = RandomForestClassifier(n_estimators=rfo_n_trees, max_depth=30, max_features = 1, random_state=random_seed)
-        clf.fit(X_train, y_train)
-        # get overall performance as ROC-AUC
-        y_pred = clf.predict_proba(X_test)[:,1]
-        resu_auc = np.round(roc_auc_score(y_test, y_pred),2).item()
-        resu_auc = "{:1.2f}".format(resu_auc)
-        # get gini-based feature importance
-        resu_imp = (clf.feature_importances_).round(2).tolist()
-        resu_imp = ["{:1.2f}".format(a) for a  in resu_imp]
-        # prepare results to be organized in a data frame
-        col_values = [[resu_auc] + resu_imp]
-        col_names = ['Importance_' + a for a in feat_sel]
-        col_names = ['AUC_Test'] + col_names
-        df_t = pd.DataFrame(col_values, columns = col_names)
-        # append meta-data on the right of df 
-        incl_features_str = ", ".join(feat_sel)
-        df_t['Included_Features'] = incl_features_str
-        # store in list 
-        df_resu.append(df_t)
-    df_resu = pd.concat(df_resu)
-    return(df_resu)
