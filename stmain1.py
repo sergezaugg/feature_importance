@@ -11,7 +11,7 @@ import plotly.graph_objects as go
 
 # streamlit run stmain.py
 
-random_seed = 554
+random_seed = 554 # 554
 np.random.seed(seed=random_seed)
 
 feat_li = [
@@ -44,8 +44,8 @@ preset_options = [
     "Both feat. informative+redundant",
     "Joint information feat. - parallel",
     "Joint information feat. - cross",
-    "Feat. not informative",
-    "One feat. informative",
+    # "Feat. not informative",
+    # "One feat. informative",
     ]
 
 with col_a:
@@ -68,24 +68,23 @@ if option1 == preset_options[2]:
         }
 if option1 == preset_options[3]:
     scenario_di = {
-        'n1' : 10000, 'mu1' : [0.0, 0.0] , 'std1' : [1,1], 'corr1' : -0.98,
-        'n2' : 10000, 'mu2' : [0.0, 0.0] , 'std2' : [1,1], 'corr2' : +0.98,
+        'n1' : 10000, 'mu1' : [0.0, 0.0] , 'std1' : [1.1,1.1], 'corr1' : -0.98,
+        'n2' : 10000, 'mu2' : [0.0, 0.0] , 'std2' : [1.1,1.1], 'corr2' : +0.98,
         }
-if option1 == preset_options[4]:
-    scenario_di ={
-        'n1' : 10000, 'mu1' : [0.0, 0.0] , 'std1' : [1,1], 'corr1' : -0.90,
-        'n2' : 10000, 'mu2' : [0.0, 0.0] , 'std2' : [1,1], 'corr2' : -0.90,
-        }
-if option1 == preset_options[5]:
-    scenario_di ={
-        'n1' : 10000, 'mu1' : [ 1.0, 1.0] , 'std1' : [1,1], 'corr1' : 0.00,
-        'n2' : 10000, 'mu2' : [-1.0, 1.0] , 'std2' : [1,1], 'corr2' : 0.00,
-        }
+# if option1 == preset_options[4]:
+#     scenario_di ={
+#         'n1' : 10000, 'mu1' : [0.0, 0.0] , 'std1' : [1,1], 'corr1' : -0.90,
+#         'n2' : 10000, 'mu2' : [0.0, 0.0] , 'std2' : [1,1], 'corr2' : -0.90,
+#         }
+# if option1 == preset_options[5]:
+#     scenario_di ={
+#         'n1' : 10000, 'mu1' : [ 1.0, 1.0] , 'std1' : [1,1], 'corr1' : 0.00,
+#         'n2' : 10000, 'mu2' : [-1.0, 1.0] , 'std2' : [1,1], 'corr2' : 0.00,
+#         }
 
 df_data = make_dataset(params = scenario_di) 
 
 df_resu = fit_rf_get_metrics(df_data, feat_li, rfo_n_trees = rfo_n_trees, random_seed = random_seed, max_features = max_features, max_depth = 30)
-
 
 fig1 = px.scatter(
     data_frame = df_data,

@@ -29,14 +29,18 @@ with col_aa:
 
     :violet[**RESULTS:**]
 
-    :blue[For main results see *Predefined scenarios* and to perform new experiments see *Define new scenarios*]
+    :blue[For main results see *Predefined scenarios* ]
+
+    :blue[To perform new experiments see *Define new scenarios*]
+
     ''')
 
     st.markdown(
     '''    
     :violet[**DISCUSSION:**]
 
-    :blue[In all 3 scenarios the feature importance of the full model is very similar, approx. (0.45, 0.45, 0.10).
+    :blue[
+    The 4 predefined scenarios gave similar feature importance of the full model, approx. (0.45, 0.45, 0.10).
     However, the impact of removing f01 or f02 is very different!
     Thinking of individual feature importance does often not make sense
     It is better to focus on feature sets and how they affect predictive performance (e.g. Test AUC)]
