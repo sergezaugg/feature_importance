@@ -53,7 +53,10 @@ It is better to focus on feature sets and how they affect predictive performance
 * First make a venv, then:
 * pip install -r requirements.txt
 
-**USAGE:**
+**USAGE WIT STREAMLIT:**
+* streamlit run stmain.py
+
+**USAGE AS SCRIPT:**
 * There is only one script **main.py** meant for interactive use.
 * Several scenarios can be defined in the dict at the top of the script
 * note that a few helper functions are imported from **utils.py**

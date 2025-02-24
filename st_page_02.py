@@ -9,8 +9,6 @@ import plotly.express as px
 from utils import make_dataset, fit_rf_get_metrics
 import plotly.graph_objects as go
 
-# streamlit run stmain.py
-
 random_seed = 557
 np.random.seed(seed=random_seed)
 
@@ -18,8 +16,8 @@ feat_li = [
     ["f01", "f02", "f03"],
     ["f01", "f03"],
     ["f02", "f03"],
-    ["f01", "f02"],
-    ["f03"],
+    # ["f01", "f02"],
+    # ["f03"],
     ]
 
 #--------------------------------

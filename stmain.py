@@ -14,6 +14,7 @@ pg = st.navigation([p0, p1, p2])
 
 pg.run()
 
+# run locally
 # streamlit run stmain.py
 
 
