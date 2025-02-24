@@ -65,7 +65,5 @@ Some additional didactically interesting scenarios are previewed here
 ![](./pics/figure0456_small.png)
 
 
-**MORE**
-*aaa
 
 

@@ -16,14 +16,14 @@ with col_aa:
     :blue[This dashboard is primarily didactic. 
     People often wish a ranking of feature importance. 
     So here I provide some visuals to explain this. 
-    Many scenarios can be assessed by playing with the sliders.
+    Many scenarios can be assessed by manually defining each class distribution with sliders.
     Details see : https://github.com/sergezaugg/feature_importance.]
 
     :violet[**METHODS:**]
 
     :blue[Synthetic datasets for supervised classification are created with one binary class (the target) and 3 continuous features (the predictors).
     The first two features (f01 and f02) can be informative for classification, while the third (f03) is always non-informative.
-    How the first two features inform classification can be actively chosen (sliders on the left).
+    How the first two features inform classification can be actively chosen (sliders).
     Random Forest classifiers are trained for 'all 3 features' and for smaller subsets of the features.
     The predictive performance (ROC-AUC) is obtained from a test set and the **impurity-based feature importance** is computed.] 
 
