@@ -3,17 +3,12 @@
 # Description : Utility functions used by main.py
 #--------------------
 
-import os
 import numpy as np
 import pandas as pd
 import streamlit as st
-import plotly.express as px
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import roc_auc_score
-# from utils import make_dataset, fit_rf_get_metrics
-# import plotly.graph_objects as go
-# from plotly.subplots import make_subplots
 
 
 def bivariate_normal(n = 1000, mu =[0,0] , std = [3,2], corr = 0.5):
@@ -59,12 +54,20 @@ def make_dataset(params):
     return(df)
 
 
-
-    
-
 # loop over feature sets and fit RFO models
 @st.cache_data
 def fit_rf_get_metrics(df_data, feat_li, rfo_n_trees = 10, random_seed = 55, max_features = 1, max_depth = 30):
+    """  
+    Description: Split into train and test set, train a random forest, get test AUC and impurity-based feature importance
+    Arguments:
+        df_data : A data frame created by make_dataset() 
+        feat_li : A list of lists that defines the feature subset to be assessed
+        rfo_n_trees : Passed to sklearn.ensemble.RandomForestClassifier
+        random_seed : Passed to sklearn.ensemble.RandomForestClassifier
+        max_features : Passed to sklearn.ensemble.RandomForestClassifier
+        max_depth : Passed to sklearn.ensemble.RandomForestClassifier
+    Returns: A small data frame with results
+    """
     df_resu = []
     for feat_sel in feat_li:
         X = df_data[feat_sel]

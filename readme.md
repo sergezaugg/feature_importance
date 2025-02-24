@@ -4,11 +4,10 @@ This small codebase is primarily didactic.
 Researchers for whom I work as data scientist often wish a ranking of feature importance. 
 So here I provide some intuitively appealing visuals to explain this. 
 Three scenarios are briefly shown in this readme, but many more can be assessed by running the code.
-
-**Interactive dashboard here https://featureimportance.streamlit.app**
+**An interactive dashboard can be found here https://featureimportance.streamlit.app.**
+**Reproducible generation of figures is best achieved with the script main.py.**
 
 **ML SUMMARY:**
-
 Synthetic datasets for supervised classification are created with one binary class (the target) and 3 continuous features (the predictors).
 The first two features can be informative for classification, while the third is always totally non-informative.
 How the first two features inform classification can be actively chosen (e.g. see scenarios below).
@@ -17,7 +16,6 @@ The predictive performance (ROC-AUC) is obtained from a test set and the **impur
 All this is summarized on plots that allow to explain the strengths and limitations of **impurity-based feature importance**.
 
 **ILLUSTRATION:**
-
 <span style="color:violet">**Figure 1:**</span> 
 Scenario that most people have in mind: Both features are almost independent and both are informative.
 Removing f01 or f02 reduces predictive performance only a bit.
@@ -29,7 +27,6 @@ Information for classification is jointly shared among both features (i.e they a
 Removing f01 or f02 kills predictive performance (AUC drops to almost 0.50).
 
 **TAKE HOME MESSAGE:**
-
 In all 3 scenarios the feature importance of the full model is very similar, approx. (0.45, 0.45, 0.10).
 However, the impact of removing f01 or f02 is very different!
 Thinking of individual feature importance does often not make sense
@@ -53,13 +50,11 @@ It is better to focus on feature sets and how they affect predictive performance
 * First make a venv, then:
 * pip install -r requirements.txt
 
-**USAGE WIT STREAMLIT:**
-* streamlit run stmain.py
-
-**USAGE AS SCRIPT:**
-* There is only one script **main.py** meant for interactive use.
-* Several scenarios can be defined in the dict at the top of the script
-* note that a few helper functions are imported from **utils.py**
+**USAGE:**
+* Clone the repo
+* go to the repo's root dir
+* To start the Streamlit dashboard do ```streamlit run stmain.py```
+* To work with a script, open **main.py**. Several scenarios can be defined in the dict at the top of the script
 
 **APPENDIX:**
 
