@@ -1,39 +1,32 @@
 #--------------------             
 # Author : Serge Zaugg
-# Description : Create synthetic datasets for classification, train models, assess classification performance and feature importance
+# Description : Create datasets, train, assess performance and feature importance
 #--------------------
 
 import numpy as np
 import streamlit as st
 import plotly.express as px
 from utils import make_dataset, fit_rf_get_metrics
-import plotly.graph_objects as go
 
-# streamlit run stmain.py
-
-random_seed = 554 # 554
+random_seed = 557
 np.random.seed(seed=random_seed)
 
 feat_li = [
     ["f01", "f02", "f03"],
     ["f01", "f03"],
     ["f02", "f03"],
-    # ["f01", "f02"],
-    # ["f03"],
     ]
 
 #--------------------------------
 # streamlit start here 
 
-# st.set_page_config(layout="wide")
-
 col_aa, col_bb, = st.columns([0.85, 0.15])
 
 with col_aa: 
-    st.title('Can we really rank features according to their importance?')
+    st.title('Can we rank features by importance?')
    
 with col_bb:
-    st.text("more")
+    st.text("RF params")
     rfo_n_trees = st.number_input("N trees random forest", min_value=10, max_value=100, value=30, step=10)
     max_features = st.number_input("max features", min_value=1, max_value=3, value=1, step=1)
    
@@ -44,12 +37,11 @@ preset_options = [
     "Both feat. informative+redundant",
     "Joint information feat. - parallel",
     "Joint information feat. - cross",
-    # "Feat. not informative",
-    # "One feat. informative",
     ]
 
 with col_a:
-    option1 = st.selectbox("Select", preset_options, key = 'sel02')
+    st.subheader("Select")
+    option1 = st.selectbox("", preset_options, key = 'sel02')
 
 if option1 == preset_options[0]:
     scenario_di = {
@@ -71,16 +63,6 @@ if option1 == preset_options[3]:
         'n1' : 10000, 'mu1' : [0.0, 0.0] , 'std1' : [1.1,1.1], 'corr1' : -0.98,
         'n2' : 10000, 'mu2' : [0.0, 0.0] , 'std2' : [1.1,1.1], 'corr2' : +0.98,
         }
-# if option1 == preset_options[4]:
-#     scenario_di ={
-#         'n1' : 10000, 'mu1' : [0.0, 0.0] , 'std1' : [1,1], 'corr1' : -0.90,
-#         'n2' : 10000, 'mu2' : [0.0, 0.0] , 'std2' : [1,1], 'corr2' : -0.90,
-#         }
-# if option1 == preset_options[5]:
-#     scenario_di ={
-#         'n1' : 10000, 'mu1' : [ 1.0, 1.0] , 'std1' : [1,1], 'corr1' : 0.00,
-#         'n2' : 10000, 'mu2' : [-1.0, 1.0] , 'std2' : [1,1], 'corr2' : 0.00,
-#         }
 
 df_data = make_dataset(params = scenario_di) 
 
@@ -106,7 +88,7 @@ with col_c:
     st.subheader("Scatterplot of scenario")
     st.plotly_chart(fig1, use_container_width=False)
 with col_d:
-    st.subheader("Predictive performance and feature importance")
+    st.subheader("Predictive performance vs importance")
     st.dataframe(df_resu, hide_index=True)  
 
 

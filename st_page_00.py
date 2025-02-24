@@ -8,7 +8,7 @@ import streamlit as st
 col_aa, col_bb, = st.columns([0.60, 0.40])
 
 with col_aa: 
-    st.title('Can we really rank features according to their importance?')
+    st.title('Can we rank features by importance?')
     st.markdown(
     '''    
     :violet[**SUMMARY:**]
@@ -23,7 +23,7 @@ with col_aa:
 
     :blue[Synthetic datasets for supervised classification are created with one binary class (the target) and 3 continuous features (the predictors).
     The first two features (f01 and f02) can be informative for classification, while the third (f03) is always non-informative.
-    How the first two features inform classification can be actively chosen (sliders).
+    How the first two features inform classification can be actively chosen.
     Random Forest classifiers are trained for 'all 3 features' and for smaller subsets of the features.
     The predictive performance (ROC-AUC) is obtained from a test set and the **impurity-based feature importance** is computed.] 
 
@@ -42,11 +42,8 @@ with col_aa:
     :blue[
     The 4 predefined scenarios gave similar feature importance of the full model, approx. (0.45, 0.45, 0.10).
     However, the impact of removing f01 or f02 is very different!
-    Thinking of individual feature importance does often not make sense
+    Thinking solely in terms of individual feature importance does often not make sense.
     It is better to focus on feature sets and how they affect predictive performance (e.g. Test AUC)]
-
-    
-
     ''')
 
    
