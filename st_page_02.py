@@ -5,11 +5,10 @@
 
 import numpy as np
 import streamlit as st
+import pandas as pd
 import plotly.express as px
 from utils import make_dataset, fit_rf_get_metrics
-
-random_seed = 557
-np.random.seed(seed=random_seed)
+from streamlit import session_state as ss
 
 feat_li = [
     ["f01", "f02", "f03"],
@@ -20,17 +19,20 @@ feat_li = [
 #--------------------------------
 # streamlit start here 
 
-col_aa, col_bb, = st.columns([0.85, 0.15])
+# initialize session state 
+if 'rfo_n_trees' not in ss:
+    ss['rfo_n_trees'] = 30
+if 'max_features' not in ss:
+    ss['max_features'] = 1
+if 'max_depth' not in ss:
+    ss['max_depth'] = 10
+if 'random_seed' not in ss:
+    ss['random_seed'] = 503
 
-with col_aa: 
-    st.title('Can we rank features by importance?')
-  
-with col_bb:
-    st.text("RF params")
-    rfo_n_trees = st.number_input("N trees random forest", min_value=10, max_value=100, value=10, step=10)
-    max_features = st.number_input("max features", min_value=1, max_value=3, value=1, step=1)
-   
-
+np.random.seed(seed=ss['random_seed'])
+    
+#----------------
+# 1st line 
 col_a, col_b, col_space01, col_c, col_d, = st.columns([0.10, 0.10, 0.05, 0.50, 0.5])
 
 with col_a:
@@ -57,7 +59,7 @@ scenario_di = {
 
 df_data = make_dataset(params = scenario_di) 
 
-df_resu = fit_rf_get_metrics(df_data, feat_li, rfo_n_trees = rfo_n_trees, random_seed = random_seed, max_features = max_features, max_depth = 30)
+df_resu = fit_rf_get_metrics(df_data, feat_li, rfo_n_trees = ss['rfo_n_trees'], random_seed = ss['random_seed'], max_features = ss['max_features'], max_depth = ss['max_depth'])
 
 fig1 = px.scatter(
     data_frame = df_data,
@@ -67,7 +69,7 @@ fig1 = px.scatter(
     width = 600,
     height = 600,
     title = "",
-    color_discrete_sequence=['#ee33ff', '#33aaff']
+    color_discrete_sequence=['#22ff99', '#9911ff']
     )
 _ = fig1.update_xaxes(showline = True, linecolor = 'white', linewidth = 1, row = 1, col = 1, mirror = True)
 _ = fig1.update_yaxes(showline = True, linecolor = 'white', linewidth = 1, row = 1, col = 1, mirror = True)
@@ -78,7 +80,59 @@ fig1.update_traces(marker=dict(size=5))
 with col_c:
     st.subheader("Scatterplot of scenario")
     st.plotly_chart(fig1, use_container_width=False)
+
+
+
+# with col_d:
+#     st.subheader("Predictive performance vs importance")
+#     st.dataframe(df_resu, hide_index=True)  
 with col_d:
     st.subheader("Predictive performance vs importance")
-    st.dataframe(df_resu, hide_index=True)  
+    # reshape dfs
+    df_r_num = df_resu.iloc[:,0:4].astype(float)
+    df_r_num['Included_Features'] = df_resu['Included_Features']
+    df_long = pd.melt(df_r_num, id_vars='Included_Features', value_vars=['AUC_Test', 'Importance_f01', 'Importance_f02', 'Importance_f03'])
+    df_imp = df_long[df_long["variable"] != 'AUC_Test']
+    df_auc = df_long[df_long["variable"] == 'AUC_Test']
+    # print(df_resu)
+    # print(df_r_num)
+    # print(df_long)
+    df_imp.fillna(value=0.0, inplace=True)
+    df_auc.fillna(value=0.0, inplace=True)
+    # AUC figure
+    barfig1 = px.bar(df_auc, x="Included_Features", y="value", color="variable", text_auto=True, barmode='group', 
+                     width = 600, height = 320,
+                     labels={"value": "ROC-AUC", })
+    barfig1.update_layout(yaxis_range=[0.0,1.0])
+    _ = barfig1.update_xaxes(showline = True, linecolor = 'white', linewidth = 2, row = 1, col = 1, mirror = True)
+    _ = barfig1.update_yaxes(showline = True, linecolor = 'white', linewidth = 2, row = 1, col = 1, mirror = True)
+    _ = barfig1.update_layout(paper_bgcolor="#112233",)
+    # importance figure     
+    barfig2 = px.bar(df_imp, x="Included_Features", y="value", color="variable", text_auto=True, barmode='group', 
+                     width = 600, height = 320,
+                     labels={"value": "Feature importance", },)
+    barfig2.update_layout(yaxis_range=[0.0,1.0])
+    _ = barfig2.update_xaxes(showline = True, linecolor = 'white', linewidth = 2, row = 1, col = 1, mirror = True)
+    _ = barfig2.update_yaxes(showline = True, linecolor = 'white', linewidth = 2, row = 1, col = 1, mirror = True)
+    _ = barfig2.update_layout(paper_bgcolor="#112233",)
+    # PASTE TO DASHBOARD
+    st.plotly_chart(barfig1, use_container_width=False)
+    st.plotly_chart(barfig2, use_container_width=False)
+    # st.dataframe(df_resu, hide_index=True) 
+
+
+#----------------
+# 2nd line 
+st.divider() 
+col01, col02, col03, col04, col05, col06= st.columns([0.10, 0.10, 0.10, 0.10, 0.50, 0.50,]) 
+with col01:
+    ss['rfo_n_trees']  = st.number_input("Nb trees", min_value=10, max_value=100,       value=30,  step=10)
+with col02:
+    ss['max_features'] = st.number_input("Max features", min_value=1, max_value=3,      value=1,   step=1)
+with col03:
+    ss['max_depth']    = st.number_input("Max tree depth", min_value=1,  max_value=50,  value=30,  step=1)
+with col04:
+    ss['random_seed']  = st.number_input("Random seed", min_value=1,  max_value=1000,   value=503, step=1)
+
+
 
