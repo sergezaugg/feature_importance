@@ -8,6 +8,7 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 from utils import make_dataset, fit_rf_get_metrics
+from sklearn.utils import shuffle
 from streamlit import session_state as ss
 
 feat_li = [
@@ -32,16 +33,15 @@ if 'random_seed' not in ss:
 np.random.seed(seed=ss['random_seed'])
 
 
-
 #----------------
 # 1st line 
-col_a, col_space01, col_c, col_d, = st.columns([0.20, 0.05, 0.50, 0.5])
+col_a, col_space01, col_c, col_d, = st.columns([0.20, 0.01, 0.50, 0.5])
 
 preset_options = [
-    "Both feat. informative+redundant",
-    "Both feat. informative",
-    "Joint information feat. - parallel",
-    "Joint information feat. - cross",
+    "Both feat inform (hi-corr)",
+    "Both feat inform (lo-corr)",
+    "Jointly inform (parallel)",
+    "Jointly inform (cross)",
     ]
 
 with col_a:
@@ -71,7 +71,6 @@ if option1 == preset_options[3]:
 
 df_data = make_dataset(params = scenario_di) 
 
-from sklearn.utils import shuffle
 df_data = shuffle(df_data)
 
 df_resu = fit_rf_get_metrics(df_data, feat_li, rfo_n_trees = ss['rfo_n_trees'], random_seed = ss['random_seed'], max_features = ss['max_features'], max_depth = ss['max_depth'])
@@ -129,17 +128,12 @@ with col_d:
     # st.dataframe(df_resu, hide_index=True) 
 
 
-
-
-
-
-
 #----------------
 # 2nd line 
 st.divider() 
-col01, col02, col03, col04, col05, col06= st.columns([0.10, 0.10, 0.10, 0.10, 0.50, 0.50,]) 
+col01, col02, col03, col04, col05, col06= st.columns([0.10, 0.10, 0.10, 0.10, 0.50, 0.10,]) 
 with col01:
-    ss['rfo_n_trees']  = st.number_input("Nb trees", min_value=10, max_value=100,       value=30,  step=10)
+    ss['rfo_n_trees']  = st.number_input("Nb trees", min_value=1, max_value=100,       value=30,  step=10)
 with col02:
     ss['max_features'] = st.number_input("Max features", min_value=1, max_value=3,      value=1,   step=1)
 with col03:

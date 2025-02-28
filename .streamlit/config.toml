@@ -1,8 +1,8 @@
 
-
-
 [theme]
 base="dark"
 primaryColor="#3366ff"
 textColor="white"
 font="sans serif"
+backgroundColor="#000011"
+secondaryBackgroundColor="#112233"

@@ -1,6 +1,6 @@
 #--------------------             
 # Author : Serge Zaugg
-# Description : Create synthetic datasets for classification, train models, assess classification performance and feature importance
+# Description : Create datasets, train, assess performance and feature importance
 #--------------------
 
 import numpy as np
@@ -8,6 +8,7 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 from utils import make_dataset, fit_rf_get_metrics
+from sklearn.utils import shuffle
 from streamlit import session_state as ss
 
 feat_li = [
@@ -59,6 +60,8 @@ scenario_di = {
 
 df_data = make_dataset(params = scenario_di) 
 
+df_data = shuffle(df_data)
+
 df_resu = fit_rf_get_metrics(df_data, feat_li, rfo_n_trees = ss['rfo_n_trees'], random_seed = ss['random_seed'], max_features = ss['max_features'], max_depth = ss['max_depth'])
 
 fig1 = px.scatter(
@@ -82,10 +85,6 @@ with col_c:
     st.plotly_chart(fig1, use_container_width=False)
 
 
-
-# with col_d:
-#     st.subheader("Predictive performance vs importance")
-#     st.dataframe(df_resu, hide_index=True)  
 with col_d:
     st.subheader("Predictive performance vs importance")
     # reshape dfs
@@ -124,7 +123,7 @@ with col_d:
 #----------------
 # 2nd line 
 st.divider() 
-col01, col02, col03, col04, col05, col06= st.columns([0.10, 0.10, 0.10, 0.10, 0.50, 0.50,]) 
+col01, col02, col03, col04, col05, col06= st.columns([0.10, 0.10, 0.10, 0.10, 0.50, 0.10,]) 
 with col01:
     ss['rfo_n_trees']  = st.number_input("Nb trees", min_value=10, max_value=100,       value=30,  step=10)
 with col02:
