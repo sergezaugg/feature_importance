@@ -92,19 +92,15 @@ with col_b:
     corr2  = st.slider("corr",    min_value=-1.0,   max_value=+1.0, value=ss['distr']['corr2'] , key="slide_corr2")
 
 
-
-
+#----------------
+# computation block 
 scenario_di = { 
         'n1' : numb1, 'mu1' : [mean1x, mean1y] , 'std1' : [stdv1x, stdv1y], 'corr1' : corr1,
         'n2' : numb2, 'mu2' : [mean2x, mean2y] , 'std2' : [stdv2x, stdv2y], 'corr2' : corr2,
         }
-
 df_data = make_dataset(params = scenario_di) 
-
 df_data = shuffle(df_data)
-
 df_resu = fit_rf_get_metrics(df_data, feat_li, rfo_n_trees = ss['rfo_n_trees'], random_seed = ss['random_seed'], max_features = ss['max_features'], max_depth = ss['max_depth'])
-
 # to enforce same class order in plots 
 df_data = df_data.sort_values(by='class')
 
@@ -124,6 +120,7 @@ _ = fig1.update_layout(paper_bgcolor="#112233",)
 _ = fig1.update(layout_xaxis_range = [-15,+15])
 _ = fig1.update(layout_yaxis_range = [-15,+15])
 fig1.update_traces(marker=dict(size=5))
+#----------------
 
 
 with col_c:
@@ -160,7 +157,7 @@ with col_d:
     _ = barfig2.update_xaxes(showline = True, linecolor = 'white', linewidth = 2, row = 1, col = 1, mirror = True)
     _ = barfig2.update_yaxes(showline = True, linecolor = 'white', linewidth = 2, row = 1, col = 1, mirror = True)
     _ = barfig2.update_layout(paper_bgcolor="#112233",)
-    # PASTE TO DASHBOARD
+    # show on dashboard
     st.plotly_chart(barfig1, use_container_width=False)
     st.plotly_chart(barfig2, use_container_width=False)
     # st.dataframe(df_resu, hide_index=True) 
