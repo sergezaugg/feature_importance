@@ -143,24 +143,37 @@ with col_d:
     df_auc.fillna(value=0.0, inplace=True)
     # AUC figure
     barfig1 = px.bar(df_auc, x="Included_Features", y="value", color="variable", text_auto=True, barmode='group', 
-                     width = 600, height = 320,
-                     labels={"value": "ROC-AUC", })
+                     width = 600, height = 290,
+                     labels={"value": "ROC-AUC", }, 
+                     color_discrete_sequence = ss['bar_colors_1'] 
+                     )
     barfig1.update_layout(yaxis_range=[0.0,1.0])
     _ = barfig1.update_xaxes(showline = True, linecolor = 'white', linewidth = 2, row = 1, col = 1, mirror = True)
     _ = barfig1.update_yaxes(showline = True, linecolor = 'white', linewidth = 2, row = 1, col = 1, mirror = True)
     _ = barfig1.update_layout(paper_bgcolor="#112233",)
+    _ = barfig1.update_layout(margin=dict(r=180, t=40 ))
+    _ = barfig1.update_layout(legend=dict(yanchor="top", y=0.9, xanchor="left", x=1.1)) 
     # importance figure     
-    barfig2 = px.bar(df_imp, x="Included_Features", y="value", color="variable", text_auto=True, barmode='group', 
-                     width = 600, height = 320,
-                     labels={"value": "Feature importance", },)
+    barfig2 = px.bar(df_imp, 
+                     x="Included_Features", 
+                     y="value", 
+                     color="variable", 
+                     text_auto=True, 
+                     barmode='group', 
+                     width = 600, 
+                     height = 290,
+                     labels={"value": "Feature importance", },
+                     color_discrete_sequence = ss['bar_colors_2'] 
+                     )
     barfig2.update_layout(yaxis_range=[0.0,1.0])
     _ = barfig2.update_xaxes(showline = True, linecolor = 'white', linewidth = 2, row = 1, col = 1, mirror = True)
     _ = barfig2.update_yaxes(showline = True, linecolor = 'white', linewidth = 2, row = 1, col = 1, mirror = True)
     _ = barfig2.update_layout(paper_bgcolor="#112233",)
+    _ = barfig2.update_layout(margin=dict(r=180, t=40 ))
+    _ = barfig2.update_layout(legend=dict(yanchor="top", y=0.9, xanchor="left", x=1.1)) 
     # show on dashboard
     st.plotly_chart(barfig1, use_container_width=False)
     st.plotly_chart(barfig2, use_container_width=False)
-    # st.dataframe(df_resu, hide_index=True) 
 
 
 #----------------

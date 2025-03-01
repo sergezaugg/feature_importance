@@ -4,6 +4,14 @@
 #--------------------
 
 import streamlit as st
+from streamlit import session_state as ss
+
+# stuff shared across pages 
+if 'bar_colors_1' not in ss:
+    ss['bar_colors_1'] = ['#0000ff']
+if 'bar_colors_2' not in ss:
+    ss['bar_colors_2'] = ['#0055ff', '#0077dd', '#0099bb']
+
 
 st.set_page_config(layout="wide")
 

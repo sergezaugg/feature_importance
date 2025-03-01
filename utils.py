@@ -1,6 +1,6 @@
 #--------------------             
 # Author : Serge Zaugg
-# Description : Utility functions used by main.py
+# Description : Utility functions used by main.py and stmain.py
 #--------------------
 
 import numpy as np
@@ -9,7 +9,6 @@ import streamlit as st
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import roc_auc_score
-
 
 def bivariate_normal(n = 1000, mu =[0,0] , std = [3,2], corr = 0.5):
     """ 
@@ -29,7 +28,7 @@ def bivariate_normal(n = 1000, mu =[0,0] , std = [3,2], corr = 0.5):
     x1 = np.random.multivariate_normal(mean = mu, cov = covar1, size=n)
     return(x1)
 
-
+@st.cache_data
 def make_dataset(params): 
     """  
     Description: Creates a dataset with a binary target variable and 3 continuous predictors (= features)  
@@ -53,7 +52,6 @@ def make_dataset(params):
     df = df[['class', 'f01', 'f02', 'f03']]
     return(df)
 
-
 # loop over feature sets and fit RFO models
 @st.cache_data
 def fit_rf_get_metrics(df_data, feat_li, rfo_n_trees = 10, random_seed = 55, max_features = 1, max_depth = 30):
@@ -73,7 +71,7 @@ def fit_rf_get_metrics(df_data, feat_li, rfo_n_trees = 10, random_seed = 55, max
         X = df_data[feat_sel]
         y = df_data['class']
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.60)
-            # initialize a model for supervised classification 
+        # initialize a model for supervised classification 
         clf = RandomForestClassifier(n_estimators=rfo_n_trees, max_depth=max_depth, max_features = max_features, random_state=random_seed)
         clf.fit(X_train, y_train)
         # get overall performance as ROC-AUC
@@ -116,7 +114,7 @@ if __name__ == "__main__":
     df.head()
     df.shape
 
-    "{:1.2f}".format(456.67895) # check 
+    "{:1.2f}".format(456.67895) # I never remember this :-) 
 
 
 
