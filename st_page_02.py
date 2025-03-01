@@ -11,11 +11,27 @@ from utils import make_dataset, fit_rf_get_metrics
 from sklearn.utils import shuffle
 from streamlit import session_state as ss
 
+# np.random.seed(seed=ss['random_seed'])
+
 feat_li = [
     ["f01", "f02", "f03"],
     ["f01", "f03"],
     ["f02", "f03"],
     ]
+
+init_vals = {
+    'mean1x' : 0.0,
+    'mean1y' : 0.0,
+    'stdv1x' : 1.0,
+    'stdv1y' : 1.0,
+    'corr1'  : 0.0,
+    'mean2x' : 0.0,
+    'mean2y' : 0.0,
+    'stdv2x' : 1.0,
+    'stdv2y' : 1.0,
+    'corr2'  : 0.0,
+    }  
+
 
 #--------------------------------
 # streamlit start here 
@@ -29,29 +45,72 @@ if 'max_depth' not in ss:
     ss['max_depth'] = 10
 if 'random_seed' not in ss:
     ss['random_seed'] = 503
+if 'distr' not in ss:
+    ss['distr'] = init_vals
 
-np.random.seed(seed=ss['random_seed'])
-    
+# reset 
+with st.form("reset_01", border=False):
+    submitted = st.form_submit_button("Reset")
+    if submitted: 
+        ss['distr'] = init_vals
+
+# with st.form("rand_1", border=False):
+#     submitted = st.form_submit_button("Randomize")
+#     if submitted: 
+#         ss['distr']['mean1x'] = np.random.uniform(low=-5.0,  high=+5.0, size=1)[0]
+#         ss['distr']['mean1y'] = np.random.uniform(low=-5.0,  high=+5.0, size=1)[0]
+#         ss['distr']['stdv1x'] = np.random.uniform(low= 0.01, high=10.0, size=1)[0]
+#         ss['distr']['stdv1y'] = np.random.uniform(low=-0.01, high=10.0, size=1)[0]
+#         ss['distr']['corr1']  = np.random.uniform(low=-1.0,  high=+1.0, size=1)[0]
+
+# with st.form("rand_2", border=False):
+#     submitted = st.form_submit_button("Randomize")
+#     if submitted: 
+#         ss['distr']['mean2x'] =  np.random.uniform(low=-5.0,  high=+5.0, size=1)[0]
+#         ss['distr']['mean2y'] =  np.random.uniform(low=-5.0,  high=+5.0, size=1)[0]
+#         ss['distr']['stdv2x'] =  np.random.uniform(low= 0.01, high=10.0, size=1)[0]
+#         ss['distr']['stdv2y'] =  np.random.uniform(low=-0.01, high=10.0, size=1)[0]
+#         ss['distr']['corr2']  =  np.random.uniform(low=-1.0,  high=+1.0, size=1)[0]
+
 #----------------
 # 1st line 
 col_a, col_b, col_space01, col_c, col_d, = st.columns([0.10, 0.10, 0.05, 0.50, 0.5])
 
 with col_a:
     st.subheader("Class A")
+    with st.form("rand_1", border=False):
+        submitted = st.form_submit_button("Randomize")
+        if submitted: 
+            ss['distr']['mean1x'] = np.random.uniform(low=-5.0,  high=+5.0, size=1)[0]
+            ss['distr']['mean1y'] = np.random.uniform(low=-5.0,  high=+5.0, size=1)[0]
+            ss['distr']['stdv1x'] = np.random.uniform(low= 0.01, high=5.0, size=1)[0]
+            ss['distr']['stdv1y'] = np.random.uniform(low=-0.01, high=5.0, size=1)[0]
+            ss['distr']['corr1']  = np.random.uniform(low=-1.0,  high=+1.0, size=1)[0]
     numb1  = st.slider("N",       min_value=  10,   max_value=1000, value=300,  key="slide_n1")
-    mean1x = st.slider("mean x",  min_value= -5.0,  max_value=+5.0, value=1.0,  key="slide_mu1x")
-    mean1y = st.slider("mean y",  min_value= -5.0,  max_value=+5.0, value=1.0,  key="slide_mu1y")
-    stdv1x = st.slider("stdev x", min_value= +0.01, max_value=10.0, value=1.0,  key="slide_std1x")
-    stdv1y = st.slider("stdev y", min_value= +0.01, max_value=10.0, value=1.0,  key="slide_std1y")
-    corr1  = st.slider("corr",    min_value=-1.0,   max_value=+1.0, value=0.9 , key="slide_corr1")
+    mean1x = st.slider("mean x",  min_value= -5.0,  max_value=+5.0, value=ss['distr']['mean1x'], key="slide_mu1x")
+    mean1y = st.slider("mean y",  min_value= -5.0,  max_value=+5.0, value=ss['distr']['mean1y'], key="slide_mu1y")
+    stdv1x = st.slider("stdev x", min_value= +0.01, max_value=10.0, value=ss['distr']['stdv1x'], key="slide_std1x")
+    stdv1y = st.slider("stdev y", min_value= +0.01, max_value=10.0, value=ss['distr']['stdv1y'], key="slide_std1y")
+    corr1  = st.slider("corr",    min_value=-1.0,   max_value=+1.0, value=ss['distr']['corr1'] , key="slide_corr1")
 with col_b:   
     st.subheader("Class B")
+    with st.form("rand_2", border=False):
+        submitted = st.form_submit_button("Randomize")
+        if submitted: 
+            ss['distr']['mean2x'] =  np.random.uniform(low=-5.0,  high=+5.0, size=1)[0]
+            ss['distr']['mean2y'] =  np.random.uniform(low=-5.0,  high=+5.0, size=1)[0]
+            ss['distr']['stdv2x'] =  np.random.uniform(low= 0.01, high=5.0, size=1)[0]
+            ss['distr']['stdv2y'] =  np.random.uniform(low=-0.01, high=5.0, size=1)[0]
+            ss['distr']['corr2']  =  np.random.uniform(low=-1.0,  high=+1.0, size=1)[0]
     numb2  = st.slider("N",       min_value=  10,   max_value=1000, value=300,  key="slide_n2")
-    mean2x = st.slider("mean x",  min_value= -5.0,  max_value=+5.0, value=1.0,  key="slide_mu2x")
-    mean2y = st.slider("mean y",  min_value= -5.0,  max_value=+5.0, value=1.0,  key="slide_mu2y")
-    stdv2x = st.slider("stdev x", min_value= +0.01, max_value=10.0, value=1.0,  key="slide_std2x")
-    stdv2y = st.slider("stdev y", min_value= +0.01, max_value=10.0, value=1.0,  key="slide_std2y")
-    corr2  = st.slider("corr",    min_value=-1.0,   max_value=+1.0, value=-0.9, key="slide_corr2")
+    mean2x = st.slider("mean x",  min_value= -5.0,  max_value=+5.0, value=ss['distr']['mean2x'], key="slide_mu2x")
+    mean2y = st.slider("mean y",  min_value= -5.0,  max_value=+5.0, value=ss['distr']['mean2y'], key="slide_mu2y")
+    stdv2x = st.slider("stdev x", min_value= +0.01, max_value=10.0, value=ss['distr']['stdv2x'], key="slide_std2x")
+    stdv2y = st.slider("stdev y", min_value= +0.01, max_value=10.0, value=ss['distr']['stdv2y'], key="slide_std2y")
+    corr2  = st.slider("corr",    min_value=-1.0,   max_value=+1.0, value=ss['distr']['corr2'] , key="slide_corr2")
+
+
+
 
 scenario_di = { 
         'n1' : numb1, 'mu1' : [mean1x, mean1y] , 'std1' : [stdv1x, stdv1y], 'corr1' : corr1,
@@ -63,6 +122,9 @@ df_data = make_dataset(params = scenario_di)
 df_data = shuffle(df_data)
 
 df_resu = fit_rf_get_metrics(df_data, feat_li, rfo_n_trees = ss['rfo_n_trees'], random_seed = ss['random_seed'], max_features = ss['max_features'], max_depth = ss['max_depth'])
+
+# to enforce same class order in plots 
+df_data = df_data.sort_values(by='class')
 
 fig1 = px.scatter(
     data_frame = df_data,
@@ -77,6 +139,8 @@ fig1 = px.scatter(
 _ = fig1.update_xaxes(showline = True, linecolor = 'white', linewidth = 1, row = 1, col = 1, mirror = True)
 _ = fig1.update_yaxes(showline = True, linecolor = 'white', linewidth = 1, row = 1, col = 1, mirror = True)
 _ = fig1.update_layout(paper_bgcolor="#112233",)
+_ = fig1.update(layout_xaxis_range = [-10,+10])
+_ = fig1.update(layout_yaxis_range = [-10,+10])
 fig1.update_traces(marker=dict(size=5))
 
 
