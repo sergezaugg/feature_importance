@@ -17,7 +17,6 @@ with col_aa:
     People often wish a ranking of feature importance. 
     So here I provide some visuals to explain this. 
     Many scenarios can be assessed by manually defining each class distribution with sliders.
-    Details see : https://github.com/sergezaugg/feature_importance.
 
     :violet[**METHODS:**]
 

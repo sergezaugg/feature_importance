@@ -54,24 +54,6 @@ with st.form("reset_01", border=False):
     if submitted: 
         ss['distr'] = init_vals
 
-# with st.form("rand_1", border=False):
-#     submitted = st.form_submit_button("Randomize")
-#     if submitted: 
-#         ss['distr']['mean1x'] = np.random.uniform(low=-5.0,  high=+5.0, size=1)[0]
-#         ss['distr']['mean1y'] = np.random.uniform(low=-5.0,  high=+5.0, size=1)[0]
-#         ss['distr']['stdv1x'] = np.random.uniform(low= 0.01, high=10.0, size=1)[0]
-#         ss['distr']['stdv1y'] = np.random.uniform(low=-0.01, high=10.0, size=1)[0]
-#         ss['distr']['corr1']  = np.random.uniform(low=-1.0,  high=+1.0, size=1)[0]
-
-# with st.form("rand_2", border=False):
-#     submitted = st.form_submit_button("Randomize")
-#     if submitted: 
-#         ss['distr']['mean2x'] =  np.random.uniform(low=-5.0,  high=+5.0, size=1)[0]
-#         ss['distr']['mean2y'] =  np.random.uniform(low=-5.0,  high=+5.0, size=1)[0]
-#         ss['distr']['stdv2x'] =  np.random.uniform(low= 0.01, high=10.0, size=1)[0]
-#         ss['distr']['stdv2y'] =  np.random.uniform(low=-0.01, high=10.0, size=1)[0]
-#         ss['distr']['corr2']  =  np.random.uniform(low=-1.0,  high=+1.0, size=1)[0]
-
 #----------------
 # 1st line 
 col_a, col_b, col_space01, col_c, col_d, = st.columns([0.10, 0.10, 0.05, 0.50, 0.5])
@@ -139,8 +121,8 @@ fig1 = px.scatter(
 _ = fig1.update_xaxes(showline = True, linecolor = 'white', linewidth = 1, row = 1, col = 1, mirror = True)
 _ = fig1.update_yaxes(showline = True, linecolor = 'white', linewidth = 1, row = 1, col = 1, mirror = True)
 _ = fig1.update_layout(paper_bgcolor="#112233",)
-_ = fig1.update(layout_xaxis_range = [-10,+10])
-_ = fig1.update(layout_yaxis_range = [-10,+10])
+_ = fig1.update(layout_xaxis_range = [-15,+15])
+_ = fig1.update(layout_yaxis_range = [-15,+15])
 fig1.update_traces(marker=dict(size=5))
 
 
