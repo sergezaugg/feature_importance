@@ -17,7 +17,6 @@ with col_aa:
     People often wish a ranking of feature importance. 
     So here I provide some visuals to explain this. 
     Many scenarios can be assessed by manually defining each class distribution with sliders.
-    Details see : https://github.com/sergezaugg/feature_importance.
 
     :violet[**METHODS:**]
 
@@ -40,7 +39,7 @@ with col_aa:
 
     The 4 predefined scenarios gave similar feature importance of the full model, approx. (0.45, 0.45, 0.10).
     However, the impact of removing f01 or f02 is very different!
-    Thinking solely in terms of individual feature importance does often not make sense.
+    Thinking solely in terms of individual feature importance is not sufficient.
     It is better to focus on feature sets and how they affect predictive performance (e.g. Test AUC)
     ''')
 

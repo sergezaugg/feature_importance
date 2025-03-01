@@ -56,12 +56,5 @@ It is better to focus on feature sets and how they affect predictive performance
 * To start the Streamlit dashboard do ```streamlit run stmain.py```
 * To work with a script, open **main.py**. Several scenarios can be defined in the dict at the top of the script
 
-**APPENDIX:**
-
-Some additional didactically interesting scenarios are previewed here
-
-![](./pics/figure0456_small.png)
-
-
 
 
