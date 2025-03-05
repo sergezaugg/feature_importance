@@ -1,6 +1,7 @@
 #--------------------             
 # Author : Serge Zaugg
 # Description : Main streamlit entry point
+# run locally : streamlit run stmain.py
 #--------------------
 
 import streamlit as st
@@ -23,7 +24,12 @@ pg = st.navigation([p0, p1, p2])
 
 pg.run()
 
-# run locally
-# streamlit run stmain.py
 
+with st.sidebar:
+    st.text("-- Under development --")
+    st.title(""); st.title(""); st.title(""); st.title(""); st.title(""); st.title(""); st.title("")
+    st.title(""); st.title(""); st.title(""); st.title("") 
+    st.markdown(''':gray[RELATED TOPICS]''')
+    st.page_link("https://ml-performance-metrics.streamlit.app/", label=":gray[ml-performance-metrics]")
+    st.page_link("https://purenoisefeatures.streamlit.app//", label=":gray[pure-noise-features]")
 
