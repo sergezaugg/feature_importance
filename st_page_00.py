@@ -31,16 +31,14 @@ with col_aa:
 
     with st.container(border=True, key='conta_03'):
         st.markdown(''':blue[**RESULTS**]''')
-
-        st.page_link("st_page_01.py", label="For main results see **:blue[Predefined scenarios]**")
-        st.page_link("st_page_02.py", label="To perform new experiments see **:blue[Define new scenarios]**")
         st.markdown(
         '''    
-        The 4 predefined scenarios gave similar feature importance of the full model, approx. (0.45, 0.45, 0.10).
+        The first 4 predefined scenarios gave similar feature importance of the full model, approx. (0.45, 0.45, 0.10).
         However, the impact of removing f01 or f02 is very different!
-        Thinking solely in terms of individual feature importance is not sufficient.
-        It is better to focus on feature sets and how they affect predictive performance (e.g. Test AUC)
+        It can be concluded that individual feature importance does not give the full picture.
+        It is better to focus on feature sets and how they affect predictive performance.
         ''')
+        st.page_link("st_page_02.py", label="To perform experiments see **:blue[Interactive]**")
 
     
     

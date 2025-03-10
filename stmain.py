@@ -12,18 +12,17 @@ if 'bar_colors_1' not in ss:
     ss['bar_colors_1'] = ['#0000ff']
 if 'bar_colors_2' not in ss:
     ss['bar_colors_2'] = ['#0055ff', '#0077dd', '#0099bb']
-
+if 'dot_colors_1' not in ss:   
+    ss['dot_colors_1'] = ['#2200ff', '#00ff22', '#33ff00', '#00ffff', '#ff00ff', '#ffff66', '#ff0000']
 
 st.set_page_config(layout="wide")
 
 p0 = st.Page("st_page_00.py", title="Summary")
-p1 = st.Page("st_page_02.py", title="Define new scenarios")
-p2 = st.Page("st_page_01.py", title="Predefined scenarios")
+p2 = st.Page("st_page_02.py", title="Interactive")
 
-pg = st.navigation([p0, p1, p2])
+pg = st.navigation([p0, p2])
 
 pg.run()
-
 
 with st.sidebar:
     st.text("-- Under development --")
