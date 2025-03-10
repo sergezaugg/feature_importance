@@ -75,22 +75,49 @@ if 'distr' not in ss:
     ss['distr'] = {'cus' : scenarios_presp['Both feat inform (hi-corr)']}     
 
 
-with st.container(border=True, key='conta_b01'):
-    with st.form(key = "f01", border=False):
-        a0, a1, a2 = st.columns(3)  # st.columns([0.60, 0.40, 0.40])
-        with a0:
-            preset_options = scenarios_presp.keys()
-            option1 = st.selectbox("Predefined distributions", preset_options, key = 'sel02')
-        with a1:
-            st.text("")
-            st.text("")
-            submitted = st.form_submit_button("Confirm")
-        if submitted: 
-            ss['distr'] = {'cus' : scenarios_presp[option1]}
+
 
 
 #----------------
 # 1st line 
+col_a0, col_b0, = st.columns([0.10, 0.20])
+
+with col_a0:
+    with st.container(border=True, key='conta_b01'):
+        with st.form(key = "f01", border=False):
+            a0, a1 = st.columns([0.6, 0.3])  
+            with a0:
+                preset_options = scenarios_presp.keys()
+                option1 = st.selectbox("Predefined distributions", preset_options, key = 'sel02')
+            with a1:
+                st.text("")
+                st.text("")
+                submitted = st.form_submit_button("Confirm")
+            if submitted: 
+                ss['distr'] = {'cus' : scenarios_presp[option1]}
+
+with col_b0:
+    with st.container(border=True, key='conta_b02'):
+        with st.form(key = "f02", border=False):
+            col01, col02, col03, col04, col05= st.columns([0.10, 0.10, 0.10, 0.10, 0.10]) 
+            with col01:
+                ss['rfo_n_trees']  = st.number_input("Nb trees", min_value=10, max_value=100,       value=30,  step=10)
+            with col02:
+                ss['max_features'] = st.number_input("Max features", min_value=1, max_value=3,      value=1,   step=1)
+            with col03:
+                ss['max_depth']    = st.number_input("Max tree depth", min_value=1,  max_value=50,  value=30,  step=1)
+            with col04:
+                ss['random_seed']  = st.number_input("Random seed", min_value=1,  max_value=1000,   value=503, step=1)
+            with col05:    
+                submitted_2 = st.form_submit_button("Confirm")
+            if submitted: 
+                print("aa")
+
+
+
+
+#----------------
+# 2nd line 
 col_a, col_b, col_space01, col_c, col_d, = st.columns([0.10, 0.10, 0.05, 0.50, 0.5])
 
 with col_a:
@@ -196,21 +223,5 @@ with col_d:
     # show on dashboard
     st.plotly_chart(barfig1, use_container_width=False)
     st.plotly_chart(barfig2, use_container_width=False)
-
-
-#----------------
-# 2nd line 
-# st.divider() 
-with st.container(border=True, key='conta_c01'):
-    col01, col02, col03, col04, col05, col06= st.columns([0.10, 0.10, 0.10, 0.10, 0.50, 0.10,]) 
-    with col01:
-        ss['rfo_n_trees']  = st.number_input("Nb trees", min_value=10, max_value=100,       value=30,  step=10)
-    with col02:
-        ss['max_features'] = st.number_input("Max features", min_value=1, max_value=3,      value=1,   step=1)
-    with col03:
-        ss['max_depth']    = st.number_input("Max tree depth", min_value=1,  max_value=50,  value=30,  step=1)
-    with col04:
-        ss['random_seed']  = st.number_input("Random seed", min_value=1,  max_value=1000,   value=503, step=1)
-
 
 
