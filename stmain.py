@@ -19,8 +19,10 @@ st.set_page_config(layout="wide")
 p0 = st.Page("st_page_00.py", title="Summary")
 p1 = st.Page("st_page_02.py", title="Define new scenarios")
 p2 = st.Page("st_page_01.py", title="Predefined scenarios")
+p3 = st.Page("st_page_03.py", title="3D plot, just for fun")
 
-pg = st.navigation([p0, p1, p2])
+
+pg = st.navigation([p0, p1, p2, p3])
 
 pg.run()
 

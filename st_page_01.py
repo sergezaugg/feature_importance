@@ -17,6 +17,11 @@ feat_li = [
     ["f02", "f03"],
     ]
 
+
+
+
+
+
 #--------------------------------
 # streamlit start here 
 
@@ -29,6 +34,7 @@ if 'max_depth' not in ss:
     ss['max_depth'] = 30
 if 'random_seed' not in ss:
     ss['random_seed'] = 503
+
 
 np.random.seed(seed=ss['random_seed'])
 
