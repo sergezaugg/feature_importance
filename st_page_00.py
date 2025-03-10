@@ -32,8 +32,8 @@ with col_aa:
     with st.container(border=True, key='conta_03'):
         st.markdown(''':blue[**RESULTS**]''')
 
-        st.page_link("st_page_01.py", label="For main results see **:blue[Predefined scenarios]**")
-        st.page_link("st_page_02.py", label="To perform new experiments see **:blue[Define new scenarios]**")
+        # st.page_link("st_page_01.py", label="For main results see **:blue[Predefined scenarios]**")
+        # st.page_link("st_page_02.py", label="To perform new experiments see **:blue[Define new scenarios]**")
         st.markdown(
         '''    
         The 4 predefined scenarios gave similar feature importance of the full model, approx. (0.45, 0.45, 0.10).
