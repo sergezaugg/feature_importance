@@ -66,7 +66,7 @@ if 'max_features' not in ss:
 if 'max_depth' not in ss:
     ss['max_depth'] = 10
 if 'random_seed' not in ss:
-    ss['random_seed'] = 504
+    ss['random_seed'] = 506
 if 'distr' not in ss:
     ss['distr'] = {'cus' : scenarios_presp['Both feat inform (hi-corr)']}     
 
@@ -103,7 +103,7 @@ with col_b0:
             with col03:
                 cc = st.number_input("Max tree depth", min_value=1,  max_value=50,  value=30,  step=1)
             with col04:
-                dd = st.number_input("Random seed", min_value=1,  max_value=1000,   value=504, step=1)
+                dd = st.number_input("Random seed", min_value=1,  max_value=1000,   value=506, step=1)
             with col05:  
                 st.text("")
                 st.text("")  
@@ -147,7 +147,7 @@ ss['distr']['cus'] = {
 
 np.random.seed(seed=ss['random_seed'])
 df_data = make_dataset(params = ss['distr']['cus']) 
-df_data = shuffle(df_data)
+# df_data = shuffle(df_data)
 df_resu = fit_rf_get_metrics(df_data, feat_li, rfo_n_trees = ss['rfo_n_trees'], random_seed = ss['random_seed'], max_features = ss['max_features'], max_depth = ss['max_depth'])
 # to enforce same class order in plots 
 df_data = df_data.sort_values(by='class')

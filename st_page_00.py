@@ -35,7 +35,7 @@ with col_aa:
         '''    
         The first 4 predefined scenarios gave similar feature importance of the full model, approx. (0.45, 0.45, 0.10).
         However, the impact of removing f01 or f02 is very different!
-        Ic can be concluded that individual feature importance does not give the full picture.
+        It can be concluded that individual feature importance does not give the full picture.
         It is better to focus on feature sets and how they affect predictive performance.
         ''')
         st.page_link("st_page_02.py", label="To perform experiments see **:blue[Interactive]**")
