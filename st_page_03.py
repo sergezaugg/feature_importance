@@ -51,14 +51,6 @@ col_a, col_b, col_c= st.columns([0.10, 0.10, 0.50, ])
 
 with col_a:
     st.subheader("Class A")
-    with st.form("rand_1", border=False):
-        submitted = st.form_submit_button("Randomize")
-        if submitted: 
-            ss['distr']['mean1x'] = np.random.uniform(low=-5.0,  high=+5.0, size=1)[0]
-            ss['distr']['mean1y'] = np.random.uniform(low=-5.0,  high=+5.0, size=1)[0]
-            ss['distr']['stdv1x'] = np.random.uniform(low= 0.01, high=5.0, size=1)[0]
-            ss['distr']['stdv1y'] = np.random.uniform(low=-0.01, high=5.0, size=1)[0]
-            ss['distr']['corr1']  = np.random.uniform(low=-1.0,  high=+1.0, size=1)[0]
     numb1  = st.slider("N",       min_value=  10,   max_value=1000, value=300,  key="slide_n1")
     mean1x = st.slider("mean x",  min_value= -5.0,  max_value=+5.0, value=ss['distr']['mean1x'], key="slide_mu1x")
     mean1y = st.slider("mean y",  min_value= -5.0,  max_value=+5.0, value=ss['distr']['mean1y'], key="slide_mu1y")
@@ -67,14 +59,6 @@ with col_a:
     corr1  = st.slider("corr",    min_value=-1.0,   max_value=+1.0, value=ss['distr']['corr1'] , key="slide_corr1")
 with col_b:   
     st.subheader("Class B")
-    with st.form("rand_2", border=False):
-        submitted = st.form_submit_button("Randomize")
-        if submitted: 
-            ss['distr']['mean2x'] =  np.random.uniform(low=-5.0,  high=+5.0, size=1)[0]
-            ss['distr']['mean2y'] =  np.random.uniform(low=-5.0,  high=+5.0, size=1)[0]
-            ss['distr']['stdv2x'] =  np.random.uniform(low= 0.01, high=5.0, size=1)[0]
-            ss['distr']['stdv2y'] =  np.random.uniform(low=-0.01, high=5.0, size=1)[0]
-            ss['distr']['corr2']  =  np.random.uniform(low=-1.0,  high=+1.0, size=1)[0]
     numb2  = st.slider("N",       min_value=  10,   max_value=1000, value=300,  key="slide_n2")
     mean2x = st.slider("mean x",  min_value= -5.0,  max_value=+5.0, value=ss['distr']['mean2x'], key="slide_mu2x")
     mean2y = st.slider("mean y",  min_value= -5.0,  max_value=+5.0, value=ss['distr']['mean2y'], key="slide_mu2y")

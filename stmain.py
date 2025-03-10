@@ -15,14 +15,12 @@ if 'bar_colors_2' not in ss:
 if 'dot_colors_1' not in ss:   
     ss['dot_colors_1'] = ['#2200ff', '#00ff22', '#33ff00', '#00ffff', '#ff00ff', '#ffff66', '#ff0000']
 
-
 st.set_page_config(layout="wide")
 
 p0 = st.Page("st_page_00.py", title="Summary")
 p2 = st.Page("st_page_02.py", title="Interactive")
-p3 = st.Page("st_page_03.py", title="3D plot, just for fun")
 
-pg = st.navigation([p0, p2, p3])
+pg = st.navigation([p0, p2])
 
 pg.run()
 

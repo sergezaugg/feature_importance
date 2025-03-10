@@ -83,7 +83,7 @@ if 'distr' not in ss:
 col_a0, col_b0, = st.columns([0.10, 0.20])
 
 with col_a0:
-    with st.container(border=True, key='conta_b01'):
+    with st.container(border=True, key='conta_b01', height=120):
         with st.form(key = "f01", border=False):
             a0, a1 = st.columns([0.6, 0.3])  
             with a0:
@@ -92,26 +92,31 @@ with col_a0:
             with a1:
                 st.text("")
                 st.text("")
-                submitted = st.form_submit_button("Confirm")
-            if submitted: 
+                submitted_1 = st.form_submit_button("Confirm")
+            if submitted_1: 
                 ss['distr'] = {'cus' : scenarios_presp[option1]}
 
 with col_b0:
-    with st.container(border=True, key='conta_b02'):
+    with st.container(border=True, key='conta_b02', height=120):
         with st.form(key = "f02", border=False):
             col01, col02, col03, col04, col05= st.columns([0.10, 0.10, 0.10, 0.10, 0.10]) 
             with col01:
-                ss['rfo_n_trees']  = st.number_input("Nb trees", min_value=10, max_value=100,       value=30,  step=10)
+                aa = st.number_input("Nb trees", min_value=10, max_value=100,       value=30,  step=10)
             with col02:
-                ss['max_features'] = st.number_input("Max features", min_value=1, max_value=3,      value=1,   step=1)
+                bb = st.number_input("Max features", min_value=1, max_value=3,      value=1,   step=1)
             with col03:
-                ss['max_depth']    = st.number_input("Max tree depth", min_value=1,  max_value=50,  value=30,  step=1)
+                cc = st.number_input("Max tree depth", min_value=1,  max_value=50,  value=30,  step=1)
             with col04:
-                ss['random_seed']  = st.number_input("Random seed", min_value=1,  max_value=1000,   value=503, step=1)
-            with col05:    
+                dd = st.number_input("Random seed", min_value=1,  max_value=1000,   value=503, step=1)
+            with col05:  
+                st.text("")
+                st.text("")  
                 submitted_2 = st.form_submit_button("Confirm")
-            if submitted: 
-                print("aa")
+            if submitted_2: 
+                ss['rfo_n_trees']  = aa
+                ss['max_features'] = bb
+                ss['max_depth']    = cc
+                ss['random_seed']  = dd
 
 
 
@@ -146,7 +151,7 @@ ss['distr']['cus'] = {
         'n2' : numb2, 'mu2' : [mean2x, mean2y] , 'std2' : [stdv2x, stdv2y], 'corr2' : corr2,
         }
 
-
+np.random.seed(seed=ss['random_seed'])
 df_data = make_dataset(params = ss['distr']['cus']) 
 df_data = shuffle(df_data)
 df_resu = fit_rf_get_metrics(df_data, feat_li, rfo_n_trees = ss['rfo_n_trees'], random_seed = ss['random_seed'], max_features = ss['max_features'], max_depth = ss['max_depth'])
@@ -223,5 +228,43 @@ with col_d:
     # show on dashboard
     st.plotly_chart(barfig1, use_container_width=False)
     st.plotly_chart(barfig2, use_container_width=False)
+
+
+
+
+
+#----------------
+# 2nd line 
+col_a, col_b, col_space01, col_c, col_d, = st.columns([0.10, 0.10, 0.05, 0.50, 0.5])
+
+with col_c:
+    st.subheader("3D plot")
+
+    fig3d = px.scatter_3d(
+        data_frame = df_data,
+        x = 'f01',
+        y = 'f03',
+        z = 'f02',
+        color = 'class',
+        width = 600,
+        height = 600,
+        title = "",
+        color_discrete_sequence = ss['dot_colors_1']
+        )
+
+    _ = fig3d.update_xaxes(showline = True, linecolor = 'white', linewidth = 1, row = 1, col = 1, mirror = True)
+    _ = fig3d.update_yaxes(showline = True, linecolor = 'white', linewidth = 1, row = 1, col = 1, mirror = True)
+    _ = fig3d.update_layout(paper_bgcolor="#112233",)
+    # _ = fig3d.update(layout_xaxis_range = [-15,+15])
+    # _ = fig3d.update(layout_yaxis_range = [-15,+15])
+    fig3d.update_traces(marker=dict(size=5))
+
+
+    st.plotly_chart(fig3d, use_container_width=False)
+
+
+
+
+
 
 
