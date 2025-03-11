@@ -119,31 +119,35 @@ with col_b0:
 # 2nd line 
 col_a, col_b, col_space01, col_c, col_d, = st.columns([0.10, 0.10, 0.05, 0.50, 0.5])
 
+# with st.form(key = "f03", border=False):
+#     submitted_3 = st.form_submit_button("Confirm")
+#     if submitted_3: 
+#         print("ha")
 with col_a:
     st.subheader("Class A")
-    numb1  = st.slider("N",       min_value=  10,   max_value=5000, value=2000,  key="slide_n1")
-    mean1x = st.slider("mean x",  min_value= -5.0,  max_value=+5.0, value=ss['distr']['cus']['mu1'][0], key="slide_mu1x")
-    mean1y = st.slider("mean y",  min_value= -5.0,  max_value=+5.0, value=ss['distr']['cus']['mu1'][1], key="slide_mu1y")
-    stdv1x = st.slider("stdev x", min_value= +0.01, max_value=10.0, value=ss['distr']['cus']['std1'][0], key="slide_std1x")
-    stdv1y = st.slider("stdev y", min_value= +0.01, max_value=10.0, value=ss['distr']['cus']['std1'][1], key="slide_std1y")
-    corr1  = st.slider("corr",    min_value=-1.0,   max_value=+1.0, value=ss['distr']['cus']['corr1']  , key="slide_corr1")
+    ss['distr']['cus']['n1']      = st.slider("N",       min_value=  10,   max_value=5000, value=2000,  key="slide_n1")
+    ss['distr']['cus']['mu1'][0]  = st.slider("mean x",  min_value= -5.0,  max_value=+5.0, value=ss['distr']['cus']['mu1'][0], key="slide_mu1x", )
+    ss['distr']['cus']['mu1'][1]  = st.slider("mean y",  min_value= -5.0,  max_value=+5.0, value=ss['distr']['cus']['mu1'][1], key="slide_mu1y")
+    ss['distr']['cus']['std1'][0] = st.slider("stdev x", min_value= +0.01, max_value=10.0, value=ss['distr']['cus']['std1'][0], key="slide_std1x")
+    ss['distr']['cus']['std1'][1] = st.slider("stdev y", min_value= +0.01, max_value=10.0, value=ss['distr']['cus']['std1'][1], key="slide_std1y")
+    ss['distr']['cus']['corr1']   = st.slider("corr",    min_value=-1.0,   max_value=+1.0, value=ss['distr']['cus']['corr1']  , key="slide_corr1")
 with col_b:   
     st.subheader("Class B")
-    numb2  = st.slider("N",       min_value=  10,   max_value=5000, value=2000,  key="slide_n2")
-    mean2x = st.slider("mean x",  min_value= -5.0,  max_value=+5.0, value=ss['distr']['cus']['mu2'][0], key="slide_mu2x")
-    mean2y = st.slider("mean y",  min_value= -5.0,  max_value=+5.0, value=ss['distr']['cus']['mu2'][1], key="slide_mu2y")
-    stdv2x = st.slider("stdev x", min_value= +0.01, max_value=10.0, value=ss['distr']['cus']['std2'][0], key="slide_std2x")
-    stdv2y = st.slider("stdev y", min_value= +0.01, max_value=10.0, value=ss['distr']['cus']['std2'][1], key="slide_std2y")
-    corr2  = st.slider("corr",    min_value=-1.0,   max_value=+1.0, value=ss['distr']['cus']['corr2'] , key="slide_corr2")
+    ss['distr']['cus']['n2']      = st.slider("N",       min_value=  10,   max_value=5000, value=2000,  key="slide_n2")
+    ss['distr']['cus']['mu2'][0]  = st.slider("mean x",  min_value= -5.0,  max_value=+5.0, value=ss['distr']['cus']['mu2'][0], key="slide_mu2x")
+    ss['distr']['cus']['mu2'][1]  = st.slider("mean y",  min_value= -5.0,  max_value=+5.0, value=ss['distr']['cus']['mu2'][1], key="slide_mu2y")
+    ss['distr']['cus']['std2'][0] = st.slider("stdev x", min_value= +0.01, max_value=10.0, value=ss['distr']['cus']['std2'][0], key="slide_std2x")
+    ss['distr']['cus']['std2'][1] = st.slider("stdev y", min_value= +0.01, max_value=10.0, value=ss['distr']['cus']['std2'][1], key="slide_std2y")
+    ss['distr']['cus']['corr2']   = st.slider("corr",    min_value=-1.0,   max_value=+1.0, value=ss['distr']['cus']['corr2'] , key="slide_corr2")
 
 
 #----------------
 # computation block 
 
-ss['distr']['cus'] = { 
-        'n1' : numb1, 'mu1' : [mean1x, mean1y] , 'std1' : [stdv1x, stdv1y], 'corr1' : corr1,
-        'n2' : numb2, 'mu2' : [mean2x, mean2y] , 'std2' : [stdv2x, stdv2y], 'corr2' : corr2,
-        }
+# ss['distr']['cus'] = { 
+#         'n1' : numb1, 'mu1' : [mean1x, mean1y] , 'std1' : [stdv1x, stdv1y], 'corr1' : corr1,
+#         'n2' : numb2, 'mu2' : [mean2x, mean2y] , 'std2' : [stdv2x, stdv2y], 'corr2' : corr2,
+#         }
 
 np.random.seed(seed=ss['random_seed'])
 df_data = make_dataset(params = ss['distr']['cus']) 
