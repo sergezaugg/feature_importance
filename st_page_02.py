@@ -17,6 +17,12 @@ feat_li = [
     ["f02", "f03"],
     ]
 
+# def do_that_shit():
+#     ss['distr']['cus'] = { 
+#         'n1' : numb1, 'mu1' : [mean1x, mean1y] , 'std1' : [stdv1x, stdv1y], 'corr1' : corr1,
+#         'n2' : numb2, 'mu2' : [mean2x, mean2y] , 'std2' : [stdv2x, stdv2y], 'corr2' : corr2,
+#         }
+
 # Define pre-specified scenarios 
 N = 2000
 scenarios_presp = { 
@@ -49,8 +55,8 @@ scenarios_presp = {
         'n2' : N, 'mu2' : [0.0, 0.0] , 'std2' : [0.05,0.7], 'corr2' : 0.0,
         },
     "Weak informative" : {
-        'n1' : N, 'mu1' : [0.5, 0.0] , 'std1' : [1.0,1.0], 'corr1' : -0.90,
-        'n2' : N, 'mu2' : [0.0, 0.0] , 'std2' : [1.0,1.0], 'corr2' : -0.90,
+        'n1' : N, 'mu1' : [+0.5, +0.5] , 'std1' : [2.5,2.5], 'corr1' : -0.90,
+        'n2' : N, 'mu2' : [-0.5, -0.5] , 'std2' : [2.5,2.5], 'corr2' : -0.90,
         }, 
     "Not separable" : {
         'n1' : N, 'mu1' : [0.0, 0.0] , 'std1' : [1.1,1.1], 'corr1' : 0.00,
@@ -68,8 +74,7 @@ if 'max_depth' not in ss:
 if 'random_seed' not in ss:
     ss['random_seed'] = 506
 if 'distr' not in ss:
-    ss['distr'] = {'cus' : scenarios_presp['Both feat inform (hi-corr)']}     
-
+    ss['distr'] = {'cus' : scenarios_presp['Both feat inform (hi-corr)']}   
 
 #--------------------------------
 # streamlit frontend starts here 
@@ -102,8 +107,8 @@ with col_b0:
                 bb = st.number_input("Max features", min_value=1, max_value=3,      value=1,   step=1)
             with col03:
                 cc = st.number_input("Max tree depth", min_value=1,  max_value=50,  value=30,  step=1)
-            with col04:
-                dd = st.number_input("Random seed", min_value=1,  max_value=1000,   value=506, step=1)
+            # with col04:
+            #     dd = st.number_input("Random seed", min_value=1,  max_value=1000,   value=506, step=1)
             with col05:  
                 st.text("")
                 st.text("")  
@@ -112,39 +117,43 @@ with col_b0:
                 ss['rfo_n_trees']  = aa
                 ss['max_features'] = bb
                 ss['max_depth']    = cc
-                ss['random_seed']  = dd
+                # ss['random_seed']  = dd
 
 
 #----------------
 # 2nd line 
-col_a, col_b, col_space01, col_c, col_d, = st.columns([0.10, 0.10, 0.05, 0.50, 0.5])
+
+col_a, col_b, col_c,  = st.columns([0.22, 0.45, 0.40])
 
 with col_a:
-    st.subheader("Class A")
-    numb1  = st.slider("N",       min_value=  10,   max_value=5000, value=2000,  key="slide_n1")
-    mean1x = st.slider("mean x",  min_value= -5.0,  max_value=+5.0, value=ss['distr']['cus']['mu1'][0], key="slide_mu1x")
-    mean1y = st.slider("mean y",  min_value= -5.0,  max_value=+5.0, value=ss['distr']['cus']['mu1'][1], key="slide_mu1y")
-    stdv1x = st.slider("stdev x", min_value= +0.01, max_value=10.0, value=ss['distr']['cus']['std1'][0], key="slide_std1x")
-    stdv1y = st.slider("stdev y", min_value= +0.01, max_value=10.0, value=ss['distr']['cus']['std1'][1], key="slide_std1y")
-    corr1  = st.slider("corr",    min_value=-1.0,   max_value=+1.0, value=ss['distr']['cus']['corr1']  , key="slide_corr1")
-with col_b:   
-    st.subheader("Class B")
-    numb2  = st.slider("N",       min_value=  10,   max_value=5000, value=2000,  key="slide_n2")
-    mean2x = st.slider("mean x",  min_value= -5.0,  max_value=+5.0, value=ss['distr']['cus']['mu2'][0], key="slide_mu2x")
-    mean2y = st.slider("mean y",  min_value= -5.0,  max_value=+5.0, value=ss['distr']['cus']['mu2'][1], key="slide_mu2y")
-    stdv2x = st.slider("stdev x", min_value= +0.01, max_value=10.0, value=ss['distr']['cus']['std2'][0], key="slide_std2x")
-    stdv2y = st.slider("stdev y", min_value= +0.01, max_value=10.0, value=ss['distr']['cus']['std2'][1], key="slide_std2y")
-    corr2  = st.slider("corr",    min_value=-1.0,   max_value=+1.0, value=ss['distr']['cus']['corr2'] , key="slide_corr2")
-
+    with st.form(key = "f03aa", border=False, clear_on_submit=False, enter_to_submit=False):
+        col_a3, col_b3, = st.columns([0.10, 0.10])
+        with col_a3:
+            st.subheader("Class A")
+            numb1   = st.slider("N",       min_value=  10,   max_value=5000, value=2000,  key="slide_n1")
+            mean1x  = st.slider("Mean f01",  min_value= -5.0,  max_value=+5.0, value=ss['distr']['cus']['mu1'][0], key="slide_mu1x")
+            mean1y  = st.slider("Mean f02",  min_value= -5.0,  max_value=+5.0, value=ss['distr']['cus']['mu1'][1], key="slide_mu1y")
+            stdv1x  = st.slider("Stdev f01", min_value= +0.01, max_value=10.0, value=ss['distr']['cus']['std1'][0], key="slide_std1x")
+            stdv1y  = st.slider("Stdev f02", min_value= +0.01, max_value=10.0, value=ss['distr']['cus']['std1'][1], key="slide_std1y")
+            corr1   = st.slider("Correlation",    min_value=-1.0,   max_value=+1.0, value=ss['distr']['cus']['corr1']  , key="slide_corr1") 
+        with col_b3:   
+            st.subheader("Class B")
+            numb2  = st.slider("N",       min_value=  10,   max_value=5000, value=2000,  key="slide_n2")
+            mean2x = st.slider("Mean f01",  min_value= -5.0,  max_value=+5.0, value=ss['distr']['cus']['mu2'][0], key="slide_mu2x")
+            mean2y = st.slider("Mean f02",  min_value= -5.0,  max_value=+5.0, value=ss['distr']['cus']['mu2'][1], key="slide_mu2y")
+            stdv2x = st.slider("Stdev f01", min_value= +0.01, max_value=10.0, value=ss['distr']['cus']['std2'][0], key="slide_std2x")
+            stdv2y = st.slider("Stdev f02", min_value= +0.01, max_value=10.0, value=ss['distr']['cus']['std2'][1], key="slide_std2y")
+            corr2  = st.slider("Correlation",    min_value=-1.0,   max_value=+1.0, value=ss['distr']['cus']['corr2'] , key="slide_corr2")
+        submitted_3 = st.form_submit_button("Confirm", use_container_width = True)
+        if submitted_3:
+            ss['distr']['cus'] = { 
+                'n1' : numb1, 'mu1' : [mean1x, mean1y] , 'std1' : [stdv1x, stdv1y], 'corr1' : corr1,
+                'n2' : numb2, 'mu2' : [mean2x, mean2y] , 'std2' : [stdv2x, stdv2y], 'corr2' : corr2,
+                }
+            st.rerun() # apparently this solves the jump-back-button-glitch-wtf
 
 #----------------
 # computation block 
-
-ss['distr']['cus'] = { 
-        'n1' : numb1, 'mu1' : [mean1x, mean1y] , 'std1' : [stdv1x, stdv1y], 'corr1' : corr1,
-        'n2' : numb2, 'mu2' : [mean2x, mean2y] , 'std2' : [stdv2x, stdv2y], 'corr2' : corr2,
-        }
-
 np.random.seed(seed=ss['random_seed'])
 df_data = make_dataset(params = ss['distr']['cus']) 
 # df_data = shuffle(df_data)
@@ -157,7 +166,7 @@ fig1 = px.scatter(
     x = 'f01',
     y = 'f02',
     color = 'class',
-    width = 600,
+    width = 640,
     height = 628,
     title = "",
     color_discrete_sequence = ss['dot_colors_1']
@@ -169,12 +178,11 @@ fig1.update_traces(marker=dict(size=5))
 #----------------
 
 
-with col_c:
+with col_b:
     st.subheader("Feature 1 vs feature 2")
     st.plotly_chart(fig1, use_container_width=False)
 
-
-with col_d:
+with col_c:
     # reshape dfs
     df_r_num = df_resu.iloc[:,0:4].astype(float)
     df_r_num['Included_Features'] = df_resu['Included_Features']

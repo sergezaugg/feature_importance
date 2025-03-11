@@ -19,13 +19,11 @@ with col_aa:
         '''    
         :blue[**SUMMARY**]
 
-        People often wish a ranking of feature importance. 
-        So here I provide some visuals to help explain this. 
-        Many scenarios can be assessed by manually defining each class distribution with sliders.
+        A ranking of 'feature importance' is often desired.
+        Here, I provide some interactive simulations and visuals to explain the limitations of 'feature importance'. 
         Synthetic datasets for supervised classification are created with one binary class (the target) and 3 continuous features (the predictors).
-        The first two features (f01 and f02) can be informative for classification, while the third (f03) is always non-informative.
-        How the first two features inform classification can be actively chosen.
-        Random Forest classifiers are trained for 'all 3 features' and for smaller subsets of the features.
+        The first two features (f01 and f02) can be manually tuned to be informative for classification, while the third (f03) is always non-informative.
+        Random Forest classifiers are trained with all 3 features and also for smaller subsets of the features (f01 or f02 kicked-out).
         The predictive performance (ROC-AUC) is obtained from a test set and the **impurity-based feature importance** is computed.
         ''')
 
