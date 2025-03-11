@@ -55,8 +55,8 @@ scenarios_presp = {
         'n2' : N, 'mu2' : [0.0, 0.0] , 'std2' : [0.05,0.7], 'corr2' : 0.0,
         },
     "Weak informative" : {
-        'n1' : N, 'mu1' : [0.5, 0.0] , 'std1' : [1.0,1.0], 'corr1' : -0.90,
-        'n2' : N, 'mu2' : [0.0, 0.0] , 'std2' : [1.0,1.0], 'corr2' : -0.90,
+        'n1' : N, 'mu1' : [+0.5, +0.5] , 'std1' : [2.5,2.5], 'corr1' : -0.90,
+        'n2' : N, 'mu2' : [-0.5, -0.5] , 'std2' : [2.5,2.5], 'corr2' : -0.90,
         }, 
     "Not separable" : {
         'n1' : N, 'mu1' : [0.0, 0.0] , 'std1' : [1.1,1.1], 'corr1' : 0.00,
@@ -107,8 +107,8 @@ with col_b0:
                 bb = st.number_input("Max features", min_value=1, max_value=3,      value=1,   step=1)
             with col03:
                 cc = st.number_input("Max tree depth", min_value=1,  max_value=50,  value=30,  step=1)
-            with col04:
-                dd = st.number_input("Random seed", min_value=1,  max_value=1000,   value=506, step=1)
+            # with col04:
+            #     dd = st.number_input("Random seed", min_value=1,  max_value=1000,   value=506, step=1)
             with col05:  
                 st.text("")
                 st.text("")  
@@ -117,7 +117,7 @@ with col_b0:
                 ss['rfo_n_trees']  = aa
                 ss['max_features'] = bb
                 ss['max_depth']    = cc
-                ss['random_seed']  = dd
+                # ss['random_seed']  = dd
 
 
 #----------------
