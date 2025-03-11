@@ -17,6 +17,13 @@ feat_li = [
     ["f02", "f03"],
     ]
 
+
+def do_that_shit():
+    ss['distr']['cus'] = { 
+        'n1' : numb1, 'mu1' : [mean1x, mean1y] , 'std1' : [stdv1x, stdv1y], 'corr1' : corr1,
+        'n2' : numb2, 'mu2' : [mean2x, mean2y] , 'std2' : [stdv2x, stdv2y], 'corr2' : corr2,
+        }
+
 # Define pre-specified scenarios 
 N = 2000
 scenarios_presp = { 
@@ -68,7 +75,20 @@ if 'max_depth' not in ss:
 if 'random_seed' not in ss:
     ss['random_seed'] = 506
 if 'distr' not in ss:
-    ss['distr'] = {'cus' : scenarios_presp['Both feat inform (hi-corr)']}     
+    ss['distr'] = {'cus' : scenarios_presp['Both feat inform (hi-corr)']}   
+
+    # numb1   = 100
+    # mean1x  = 0.0
+    # mean1y  = 0.0
+    # stdv1x  = 0.5
+    # stdv1y  = 0.5
+    # corr1   = 0.0  
+    # numb2  = 100
+    # mean2x = 0.0
+    # mean2y = 0.0
+    # stdv2x = 0.5
+    # stdv2y = 0.5
+    # corr2  = 0.0  
 
 
 #--------------------------------
@@ -121,11 +141,8 @@ with col_b0:
 col_a, col_b, col_c,  = st.columns([0.22, 0.45, 0.40])
 
 with col_a:
-
     with st.form(key = "f03aa", border=False):
-
         col_a3, col_b3, = st.columns([0.10, 0.10])
-
         with col_a3:
             st.subheader("Class A")
             numb1   = st.slider("N",       min_value=  10,   max_value=5000, value=2000,  key="slide_n1")
@@ -142,10 +159,6 @@ with col_a:
             stdv2x = st.slider("Stdev f01", min_value= +0.01, max_value=10.0, value=ss['distr']['cus']['std2'][0], key="slide_std2x")
             stdv2y = st.slider("Stdev f02", min_value= +0.01, max_value=10.0, value=ss['distr']['cus']['std2'][1], key="slide_std2y")
             corr2  = st.slider("Correlation",    min_value=-1.0,   max_value=+1.0, value=ss['distr']['cus']['corr2'] , key="slide_corr2")
-
-        # col_a2, col_b2, = st.columns([0.18, 0.82])
-        # with col_a2:
-        # with st.form(key = "f03aa", border=False):
         submitted_3 = st.form_submit_button("Confirm", use_container_width = True)
         if submitted_3:   
             ss['distr']['cus'] = { 
