@@ -17,12 +17,11 @@ feat_li = [
     ["f02", "f03"],
     ]
 
-
-def do_that_shit():
-    ss['distr']['cus'] = { 
-        'n1' : numb1, 'mu1' : [mean1x, mean1y] , 'std1' : [stdv1x, stdv1y], 'corr1' : corr1,
-        'n2' : numb2, 'mu2' : [mean2x, mean2y] , 'std2' : [stdv2x, stdv2y], 'corr2' : corr2,
-        }
+# def do_that_shit():
+#     ss['distr']['cus'] = { 
+#         'n1' : numb1, 'mu1' : [mean1x, mean1y] , 'std1' : [stdv1x, stdv1y], 'corr1' : corr1,
+#         'n2' : numb2, 'mu2' : [mean2x, mean2y] , 'std2' : [stdv2x, stdv2y], 'corr2' : corr2,
+#         }
 
 # Define pre-specified scenarios 
 N = 2000
@@ -77,20 +76,6 @@ if 'random_seed' not in ss:
 if 'distr' not in ss:
     ss['distr'] = {'cus' : scenarios_presp['Both feat inform (hi-corr)']}   
 
-    # numb1   = 100
-    # mean1x  = 0.0
-    # mean1y  = 0.0
-    # stdv1x  = 0.5
-    # stdv1y  = 0.5
-    # corr1   = 0.0  
-    # numb2  = 100
-    # mean2x = 0.0
-    # mean2y = 0.0
-    # stdv2x = 0.5
-    # stdv2y = 0.5
-    # corr2  = 0.0  
-
-
 #--------------------------------
 # streamlit frontend starts here 
 
@@ -141,16 +126,16 @@ with col_b0:
 col_a, col_b, col_c,  = st.columns([0.22, 0.45, 0.40])
 
 with col_a:
-    with st.form(key = "f03aa", border=False):
+    with st.form(key = "f03aa", border=False, clear_on_submit=False, enter_to_submit=False):
         col_a3, col_b3, = st.columns([0.10, 0.10])
         with col_a3:
             st.subheader("Class A")
             numb1   = st.slider("N",       min_value=  10,   max_value=5000, value=2000,  key="slide_n1")
-            mean1x  = st.slider("Mean f01",  min_value= -5.0,  max_value=+5.0, value=ss['distr']['cus']['mu1'][0], key="slide_mu1x", )
+            mean1x  = st.slider("Mean f01",  min_value= -5.0,  max_value=+5.0, value=ss['distr']['cus']['mu1'][0], key="slide_mu1x")
             mean1y  = st.slider("Mean f02",  min_value= -5.0,  max_value=+5.0, value=ss['distr']['cus']['mu1'][1], key="slide_mu1y")
             stdv1x  = st.slider("Stdev f01", min_value= +0.01, max_value=10.0, value=ss['distr']['cus']['std1'][0], key="slide_std1x")
             stdv1y  = st.slider("Stdev f02", min_value= +0.01, max_value=10.0, value=ss['distr']['cus']['std1'][1], key="slide_std1y")
-            corr1   = st.slider("Correlation",    min_value=-1.0,   max_value=+1.0, value=ss['distr']['cus']['corr1']  , key="slide_corr1")    
+            corr1   = st.slider("Correlation",    min_value=-1.0,   max_value=+1.0, value=ss['distr']['cus']['corr1']  , key="slide_corr1") 
         with col_b3:   
             st.subheader("Class B")
             numb2  = st.slider("N",       min_value=  10,   max_value=5000, value=2000,  key="slide_n2")
@@ -160,17 +145,12 @@ with col_a:
             stdv2y = st.slider("Stdev f02", min_value= +0.01, max_value=10.0, value=ss['distr']['cus']['std2'][1], key="slide_std2y")
             corr2  = st.slider("Correlation",    min_value=-1.0,   max_value=+1.0, value=ss['distr']['cus']['corr2'] , key="slide_corr2")
         submitted_3 = st.form_submit_button("Confirm", use_container_width = True)
-        if submitted_3:   
+        if submitted_3:
             ss['distr']['cus'] = { 
-                    'n1' : numb1, 'mu1' : [mean1x, mean1y] , 'std1' : [stdv1x, stdv1y], 'corr1' : corr1,
-                    'n2' : numb2, 'mu2' : [mean2x, mean2y] , 'std2' : [stdv2x, stdv2y], 'corr2' : corr2,
-                    }
-
-
-
-
-
-
+                'n1' : numb1, 'mu1' : [mean1x, mean1y] , 'std1' : [stdv1x, stdv1y], 'corr1' : corr1,
+                'n2' : numb2, 'mu2' : [mean2x, mean2y] , 'std2' : [stdv2x, stdv2y], 'corr2' : corr2,
+                }
+            st.rerun() # apparently this solves the jump-back-button-glitch-wtf
 
 #----------------
 # computation block 
@@ -201,7 +181,6 @@ fig1.update_traces(marker=dict(size=5))
 with col_b:
     st.subheader("Feature 1 vs feature 2")
     st.plotly_chart(fig1, use_container_width=False)
-
 
 with col_c:
     # reshape dfs
