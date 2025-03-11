@@ -7,7 +7,7 @@ import numpy as np
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-from utils import make_dataset, fit_rf_get_metrics
+from utils import make_dataset, fit_rf_get_metrics, reshape_df, make_scatter_plot
 from sklearn.utils import shuffle
 from streamlit import session_state as ss
 
@@ -16,12 +16,6 @@ feat_li = [
     ["f01", "f03"],
     ["f02", "f03"],
     ]
-
-# def do_that_shit():
-#     ss['distr']['cus'] = { 
-#         'n1' : numb1, 'mu1' : [mean1x, mean1y] , 'std1' : [stdv1x, stdv1y], 'corr1' : corr1,
-#         'n2' : numb2, 'mu2' : [mean2x, mean2y] , 'std2' : [stdv2x, stdv2y], 'corr2' : corr2,
-#         }
 
 # Define pre-specified scenarios 
 N = 2000
@@ -75,6 +69,7 @@ if 'random_seed' not in ss:
     ss['random_seed'] = 506
 if 'distr' not in ss:
     ss['distr'] = {'cus' : scenarios_presp['Both feat inform (hi-corr)']}   
+
 
 #--------------------------------
 # streamlit frontend starts here 
@@ -130,20 +125,20 @@ with col_a:
         col_a3, col_b3, = st.columns([0.10, 0.10])
         with col_a3:
             st.subheader("Class A")
-            numb1   = st.slider("N",       min_value=  10,   max_value=5000, value=2000,  key="slide_n1")
+            numb1   = st.slider("N",         min_value= 20,   max_value=5000, value=2000,  key="slide_n1")
             mean1x  = st.slider("Mean f01",  min_value= -5.0,  max_value=+5.0, value=ss['distr']['cus']['mu1'][0], key="slide_mu1x")
             mean1y  = st.slider("Mean f02",  min_value= -5.0,  max_value=+5.0, value=ss['distr']['cus']['mu1'][1], key="slide_mu1y")
             stdv1x  = st.slider("Stdev f01", min_value= +0.01, max_value=10.0, value=ss['distr']['cus']['std1'][0], key="slide_std1x")
             stdv1y  = st.slider("Stdev f02", min_value= +0.01, max_value=10.0, value=ss['distr']['cus']['std1'][1], key="slide_std1y")
-            corr1   = st.slider("Correlation",    min_value=-1.0,   max_value=+1.0, value=ss['distr']['cus']['corr1']  , key="slide_corr1") 
+            corr1   = st.slider("Correlation", min_value=-1.0,   max_value=+1.0, value=ss['distr']['cus']['corr1']  , key="slide_corr1") 
         with col_b3:   
             st.subheader("Class B")
-            numb2  = st.slider("N",       min_value=  10,   max_value=5000, value=2000,  key="slide_n2")
+            numb2  = st.slider("N",         min_value= 20,   max_value=5000, value=2000,  key="slide_n2")
             mean2x = st.slider("Mean f01",  min_value= -5.0,  max_value=+5.0, value=ss['distr']['cus']['mu2'][0], key="slide_mu2x")
             mean2y = st.slider("Mean f02",  min_value= -5.0,  max_value=+5.0, value=ss['distr']['cus']['mu2'][1], key="slide_mu2y")
             stdv2x = st.slider("Stdev f01", min_value= +0.01, max_value=10.0, value=ss['distr']['cus']['std2'][0], key="slide_std2x")
             stdv2y = st.slider("Stdev f02", min_value= +0.01, max_value=10.0, value=ss['distr']['cus']['std2'][1], key="slide_std2y")
-            corr2  = st.slider("Correlation",    min_value=-1.0,   max_value=+1.0, value=ss['distr']['cus']['corr2'] , key="slide_corr2")
+            corr2  = st.slider("Correlation", min_value=-1.0,   max_value=+1.0, value=ss['distr']['cus']['corr2'] , key="slide_corr2")
         submitted_3 = st.form_submit_button("Confirm", use_container_width = True)
         if submitted_3:
             ss['distr']['cus'] = { 
@@ -158,24 +153,8 @@ np.random.seed(seed=ss['random_seed'])
 df_data = make_dataset(params = ss['distr']['cus']) 
 # df_data = shuffle(df_data)
 df_resu = fit_rf_get_metrics(df_data, feat_li, rfo_n_trees = ss['rfo_n_trees'], random_seed = ss['random_seed'], max_features = ss['max_features'], max_depth = ss['max_depth'])
-# to enforce same class order in plots 
-df_data = df_data.sort_values(by='class')
-
-fig1 = px.scatter(
-    data_frame = df_data,
-    x = 'f01',
-    y = 'f02',
-    color = 'class',
-    width = 640,
-    height = 628,
-    title = "",
-    color_discrete_sequence = ss['dot_colors_1']
-    )
-_ = fig1.update_xaxes(showline = True, linecolor = 'white', linewidth = 1, row = 1, col = 1, mirror = True)
-_ = fig1.update_yaxes(showline = True, linecolor = 'white', linewidth = 1, row = 1, col = 1, mirror = True)
-_ = fig1.update_layout(paper_bgcolor="#112233",)
-fig1.update_traces(marker=dict(size=5))
-#----------------
+df_imp, df_auc = reshape_df(df_resu)
+fig1 = make_scatter_plot(df = df_data, colors = ss['dot_colors_1'], width = 640, height = 628)
 
 
 with col_b:
@@ -183,21 +162,10 @@ with col_b:
     st.plotly_chart(fig1, use_container_width=False)
 
 with col_c:
-    # reshape dfs
-    df_r_num = df_resu.iloc[:,0:4].astype(float)
-    df_r_num['Included_Features'] = df_resu['Included_Features']
-    df_long = pd.melt(df_r_num, id_vars='Included_Features', value_vars=['AUC_Test', 'Importance_f01', 'Importance_f02', 'Importance_f03'])
-    df_imp = df_long[df_long["variable"] != 'AUC_Test']
-    df_auc = df_long[df_long["variable"] == 'AUC_Test']
-    # print(df_resu)
-    # print(df_r_num)
-    # print(df_long)
-    df_imp.fillna(value=0.0, inplace=True)
-    df_auc.fillna(value=0.0, inplace=True)
+
     # AUC figure
     barfig1 = px.bar(df_auc, x="Included_Features", y="value", color="variable", text_auto=True, barmode='group', 
-                     width = 600, height = 277,
-                     labels={"value": "ROC-AUC", }, 
+                     width = 600, height = 277, labels={"value": "ROC-AUC", }, 
                      color_discrete_sequence = ss['bar_colors_1'] 
                      )
     barfig1.update_layout(yaxis_range=[0.0,1.0])
@@ -206,19 +174,20 @@ with col_c:
     _ = barfig1.update_layout(paper_bgcolor="#112233",)
     _ = barfig1.update_layout(margin=dict(r=180, t=40 ))
     _ = barfig1.update_layout(legend=dict(yanchor="top", y=0.9, xanchor="left", x=1.1)) 
+    
     # importance figure     
     barfig2 = px.bar(df_imp, x="Included_Features", y="value", color="variable", text_auto=True, barmode='group', 
-                     width = 600, height = 277,
-                     labels={"value": "Feature importance", },
+                     width = 600, height = 277, labels={"value": "Feature importance", },
                      color_discrete_sequence = ss['bar_colors_2'] 
                      )
-    
     barfig2.update_layout(yaxis_range=[0.0,1.0])
     _ = barfig2.update_xaxes(showline = True, linecolor = 'white', linewidth = 2, row = 1, col = 1, mirror = True)
     _ = barfig2.update_yaxes(showline = True, linecolor = 'white', linewidth = 2, row = 1, col = 1, mirror = True)
     _ = barfig2.update_layout(paper_bgcolor="#112233",)
     _ = barfig2.update_layout(margin=dict(r=180, t=40 ))
     _ = barfig2.update_layout(legend=dict(yanchor="top", y=0.9, xanchor="left", x=1.1)) 
+    
+    
     # show on dashboard
     st.subheader("Predictive performance (ROC-AUC)")
     st.plotly_chart(barfig1, use_container_width=False)
