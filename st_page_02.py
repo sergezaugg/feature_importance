@@ -88,7 +88,7 @@ with col_a0:
             with a1:
                 st.text("")
                 st.text("")
-                submitted_1 = st.form_submit_button("Confirm")
+                submitted_1 = st.form_submit_button("Confirm", type="primary")
             if submitted_1: 
                 ss['distr'] = {'cus' : scenarios_presp[option1]}
 
@@ -107,7 +107,7 @@ with col_b0:
             with col05:  
                 st.text("")
                 st.text("")  
-                submitted_2 = st.form_submit_button("Confirm")
+                submitted_2 = st.form_submit_button("Confirm", type="primary")
             if submitted_2: 
                 ss['rfo_n_trees']  = aa
                 ss['max_features'] = bb
@@ -139,7 +139,7 @@ with col_a:
             stdv2x = st.slider("Stdev f01", min_value= +0.01, max_value=10.0, value=ss['distr']['cus']['std2'][0], key="slide_std2x")
             stdv2y = st.slider("Stdev f02", min_value= +0.01, max_value=10.0, value=ss['distr']['cus']['std2'][1], key="slide_std2y")
             corr2  = st.slider("Correlation", min_value=-1.0,   max_value=+1.0, value=ss['distr']['cus']['corr2'] , key="slide_corr2")
-        submitted_3 = st.form_submit_button("Confirm", use_container_width = True)
+        submitted_3 = st.form_submit_button("Confirm", use_container_width = True, type="primary")
         if submitted_3:
             ss['distr']['cus'] = { 
                 'n1' : numb1, 'mu1' : [mean1x, mean1y] , 'std1' : [stdv1x, stdv1y], 'corr1' : corr1,
