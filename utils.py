@@ -6,6 +6,7 @@
 import numpy as np
 import pandas as pd
 import streamlit as st
+import plotly.express as px
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import roc_auc_score
@@ -52,6 +53,7 @@ def make_dataset(params):
     df = df[['class', 'f01', 'f02', 'f03']]
     return(df)
 
+
 # loop over feature sets and fit RFO models
 @st.cache_data
 def fit_rf_get_metrics(df_data, feat_li, rfo_n_trees = 10, random_seed = 55, max_features = 1, max_depth = 30):
@@ -70,7 +72,7 @@ def fit_rf_get_metrics(df_data, feat_li, rfo_n_trees = 10, random_seed = 55, max
     for feat_sel in feat_li:
         X = df_data[feat_sel]
         y = df_data['class']
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.60)
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.50)
         # initialize a model for supervised classification 
         clf = RandomForestClassifier(n_estimators=rfo_n_trees, max_depth=max_depth, max_features = max_features, random_state=random_seed)
         clf.fit(X_train, y_train)
@@ -95,6 +97,42 @@ def fit_rf_get_metrics(df_data, feat_li, rfo_n_trees = 10, random_seed = 55, max
     return(df_resu)
 
 
+@st.cache_data
+def reshape_df(df_resu):
+    """
+    Description : reshape df obtained from fit_rf_get_metrics()
+    """
+    df_r_num = df_resu.iloc[:,0:4].astype(float)
+    df_r_num['Included_Features'] = df_resu['Included_Features']
+    df_long = pd.melt(df_r_num, id_vars='Included_Features', value_vars=['AUC_Test', 'Importance_f01', 'Importance_f02', 'Importance_f03'])
+    df_imp = df_long[df_long["variable"] != 'AUC_Test']
+    df_auc = df_long[df_long["variable"] == 'AUC_Test']
+    df_imp.fillna(value=0.0, inplace=True)
+    df_auc.fillna(value=0.0, inplace=True)
+    return(df_imp, df_auc)
+
+
+@st.cache_data
+def make_scatter_plot(df, colors = ['#2200ff', '#00ff22'], width = 640, height = 628):
+    """
+    """
+    # to enforce same class order in plots 
+    df = df.sort_values(by='class')
+    fig = px.scatter(
+        data_frame = df,
+        x = 'f01',
+        y = 'f02',
+        color = 'class',
+        width = width,
+        height = height,
+        title = "",
+        color_discrete_sequence = colors
+        )
+    _ = fig.update_xaxes(showline = True, linecolor = 'white', linewidth = 1, row = 1, col = 1, mirror = True)
+    _ = fig.update_yaxes(showline = True, linecolor = 'white', linewidth = 1, row = 1, col = 1, mirror = True)
+    _ = fig.update_layout(paper_bgcolor="#112233",)
+    fig.update_traces(marker=dict(size=5))
+    return(fig)
 
 
 # devel code - supress execution if this is imported as module 

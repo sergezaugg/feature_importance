@@ -38,6 +38,15 @@ with col_aa:
         ''')
         st.page_link("st_page_02.py", label="To perform experiments see **:blue[Interactive]**")
 
+
+    with st.container(border=True, key='conta_04'):
+        st.markdown(''':blue[**DETAILS**]''')
+        st.markdown(
+        '''    
+        * N is the total sample size which is then split by half into train and test set
+        * Based on sklearn
+        ''')    
+
     
     
   
