@@ -20,7 +20,7 @@ st.set_page_config(layout="wide")
 p0 = st.Page("st_page_00.py", title="Summary")
 p2 = st.Page("st_page_02.py", title="Interactive")
 
-pg = st.navigation([p0, p2])
+pg = st.navigation([p2, p0])
 
 pg.run()
 
